@@ -241,23 +241,21 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&cur
     document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' m/s';
     document.getElementById('wHum').textContent=Math.round(c.relative_humidity_2m)+'%';
   }).catch(()=>{document.getElementById('wDesc').textContent='Kunde inte hämta';});
-fetch('https://corsproxy.io/?url='+encodeURIComponent('https://www.bible.com/sv/verse-of-the-day'))
-  .then(r=>r.text()).then(html=>{
-    const dm=html.match(/meta-og:description[^"]*"([^"]+)"/);
-    const tm=html.match(/<title>Dagens vers - ([^<]+)<\/title>/);
-    if(dm){
-      const full=dm[1];
-      const rm=full.match(/^([^\s].*?)\s+(Jag|Han|Hon|Det|De|Du|Ni|Vi|Ty|Var|Men|Och|För|Om|Se|Då|Nu|Så|På|I |Av|Att|En|Ett|All|Gud|Herr|Jesus|Petrus|Paulus)/);
-      let ref='',verse=full;
-      if(rm){ref=rm[1].trim();verse=full.substring(ref.length).trim();}
-      else if(tm){ref=tm[1];}
-      document.getElementById('bibleVerse').textContent='"'+verse+'"';
-      document.getElementById('bibleRef').textContent=ref||'';
-    }else{
-      document.getElementById('bibleVerse').textContent='"Jag vill ge dig insikt och lära dig den väg du skall gå."';
-      document.getElementById('bibleRef').textContent='Psaltaren 32:8';
-    }
-  }).catch(()=>{document.getElementById('bibleVerse').textContent='"Jag vill ge dig insikt och lära dig den väg du skall gå."';document.getElementById('bibleRef').textContent='Psaltaren 32:8';});
+// Hämta dagens bibelord från dedikerat API
+async function loadVerse() {
+  try {
+    const res = await fetch('https://dagensvers-dakboard-49dccefcf2c0.herokuapp.com/verse');
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Okänt fel');
+    document.getElementById('bibleVerse').textContent = '"' + (data.verse || '') + '"';
+    document.getElementById('bibleRef').textContent = data.reference || '';
+  } catch(err) {
+    document.getElementById('bibleVerse').textContent = '"Jag vill ge dig insikt och lära dig den väg du skall gå."';
+    document.getElementById('bibleRef').textContent = 'Psaltaren 32:8';
+  }
+}
+loadVerse();
+setInterval(loadVerse, 3600000);
 const PROXY='https://corsproxy.io/?url=';
 function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
 function parseRender(xml,elId,src,max){
