@@ -178,7 +178,7 @@
     <!-- Rad 3: GP + SVT + Sändaren -->
     <div class="row3">
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>Bohusläningen</span></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>Dagens Nyheter</span></div>
         <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
       <div class="card">
@@ -324,7 +324,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
     document.getElementById('eventsBox').innerHTML='<p class="loading">Kunde inte hämta händelser.</p>';
   });
 
-fetchRSS('https://www.bohuslaningen.se/feed','gpNews','Bohusläningen',4);
+fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
 fetchRSS('https://www.svt.se/rss.xml','svtNews','SVT',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
 fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
