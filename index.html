@@ -126,16 +126,22 @@
       </div>
     </div>
 
-    <!-- Bibelord -->
+    <!-- Bibliotekskort där bibelordet var -->
     <div class="card">
-      <div class="ch gold"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagens bibelord</span></div>
-      <div class="cb" style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="flex:1;"><div class="bv" id="bibleVerse">Hämtar dagens bibelord...</div><div class="br" id="bibleRef"></div></div>
-        <div class="bi"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Mina bibliotek</span></div>
+      <div class="cb" style="padding:8px;">
+        <div class="lib-grid" style="grid-template-columns:repeat(3,1fr);">
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
+          <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+        </div>
       </div>
     </div>
 
-    <!-- Rad 2: Väder + Händelser + GP -->
+    <!-- Rad 2: Väder + Dagen + Händelser -->
     <div class="row2">
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Väder — Hönö</span></div>
@@ -159,17 +165,17 @@
       </div>
 
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händelser</span></div>
-        <div class="cb" id="eventsBox"><p class="loading">Hämtar händelser...</p></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagen</span></div>
+        <div class="cb" id="dagenNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
 
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>GP</span></div>
-        <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händelser</span></div>
+        <div class="cb" id="eventsBox"><p class="loading">Hämtar händelser...</p></div>
       </div>
     </div>
 
-    <!-- Rad 3: GP + SVT + Dagen -->
+    <!-- Rad 3: GP + SVT + Sändaren -->
     <div class="row3">
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>GP</span></div>
@@ -180,8 +186,8 @@
         <div class="cb" id="svtNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagen</span></div>
-        <div class="cb" id="dagenNews"><p class="loading">Hämtar nyheter...</p></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Sändaren</span></div>
+        <div class="cb" id="sandarenNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
     </div>
 
@@ -189,6 +195,15 @@
 
   <!-- RIGHT -->
   <div class="right-col">
+    <!-- Bibelord överst i högerpanelen -->
+    <div class="card">
+      <div class="ch gold"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagens bibelord</span></div>
+      <div class="cb" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex:1;"><div class="bv" id="bibleVerse">Hämtar dagens bibelord...</div><div class="br" id="bibleRef"></div></div>
+        <div class="bi"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      </div>
+    </div>
+
     <div class="lp">
       <div class="lp-title">Hur gör jag för att...</div>
       <a class="lp-item" href="https://www.skatteverket.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="lp-txt">Deklarera &amp; skattetabell</div><div class="lp-sub">Skatteverket</div></div></a>
@@ -201,15 +216,6 @@
       <a class="lp-item" href="https://www.ica.se/artikel/nyttig-veckomeny/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div><div><div class="lp-txt">Veckans meny</div><div class="lp-sub">ICA</div></div></a>
       <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
       <div class="lp-more">→ Visa fler länkar</div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
     </div>
   </div>
 </div>
@@ -316,6 +322,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
 fetchRSS('http://www.gp.se/rss/index.jsp?d=113','gpNews','GP',4);
 fetchRSS('https://www.svt.se/rss.xml','svtNews','SVT',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
+fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
 </script>
 </body>
 </html>
