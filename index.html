@@ -182,7 +182,7 @@
         <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>SVT Nyheter</span></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>SVT Väst</span></div>
         <div class="cb" id="svtNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
       <div class="card">
@@ -325,7 +325,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
   });
 
 fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
-fetchRSS('https://www.svt.se/rss.xml','svtNews','SVT',4);
+fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
 fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
 </script>
