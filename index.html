@@ -23,9 +23,9 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh; }
-  .header { background: var(--white); padding: 0 32px; height: 68px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(40,38,38,0.08); }
-  .header-logo { height: 44px; width: auto; }
-  .date-pill { background: var(--teal); color: var(--white); font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 99px; letter-spacing: 0.03em; }
+  .header { background: var(--teal); padding: 0 32px; height: 68px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(40,38,38,0.08); }
+  .header-logo { height: 44px; width: auto; filter: brightness(0) invert(1); }
+  .date-pill { background: rgba(255,255,255,0.2); color: var(--white); font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 99px; letter-spacing: 0.03em; border: 1px solid rgba(255,255,255,0.3); }
   .greeting-strip { background: linear-gradient(90deg, var(--teal-dark), var(--teal)); padding: 10px 32px; }
   .greeting-strip p { color: rgba(255,255,255,0.8); font-size: 13px; }
   .greeting-strip strong { color: var(--gold-light); font-weight: 600; }
@@ -101,7 +101,7 @@
 <body>
 
 <div class="header">
-  <img class="header-logo" src="https://nolebring.github.io/hmk-portal/logo.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <img class="header-logo" src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
   <div class="date-pill" id="dateChip">Laddar...</div>
 </div>
 <div class="greeting-strip">
@@ -204,12 +204,12 @@
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Personalhandbok-bild.png" alt="Personalhandbok"></a>
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Uthyrning-bild.png" alt="Uthyrning"></a>
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Policys-bild.png" alt="Policys"></a>
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Sakerhet-bild.png" alt="Säkerhet"></a>
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Kontakter-bild.png" alt="Kontakter"></a>
-      <a class="lib-card" href="#"><img src="https://nolebring.github.io/hmk-portal/Övrigt-bild.png" alt="Övrigt"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
+      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
     </div>
   </div>
 </div>
