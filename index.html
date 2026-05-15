@@ -159,6 +159,7 @@
               <div class="wsi"><div class="lbl">Känns</div><div class="val" id="wFeel">–</div></div>
               <div class="wsi"><div class="lbl">Vind</div><div class="val" id="wWind">–</div></div>
               <div class="wsi"><div class="lbl">Fukt</div><div class="val" id="wHum">–</div></div>
+              <div class="wsi"><div class="lbl">UV</div><div class="val" id="wUV">–</div></div>
             </div>
           </div>
         </div>
@@ -278,7 +279,7 @@ const d=new Date();
 const days=['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
 const months=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
 document.getElementById('dateChip').textContent=days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&wind_speed_unit=ms&timezone=Europe%2FStockholm')
+fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,uv_index&wind_speed_unit=ms&timezone=Europe%2FStockholm')
   .then(r=>r.json()).then(data=>{
     const c=data.current,code=c.weather_code;
     let desc='Klart';
@@ -293,6 +294,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&cur
     document.getElementById('wFeel').textContent=Math.round(c.apparent_temperature)+'°';
     document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' m/s';
     document.getElementById('wHum').textContent=Math.round(c.relative_humidity_2m)+'%';
+    document.getElementById('wUV').textContent=c.uv_index?.toFixed(1)??'–';
   }).catch(()=>{document.getElementById('wDesc').textContent='Kunde inte hämta';});
 // Hämta dagens bibelord från dedikerat API
 async function loadVerse() {
