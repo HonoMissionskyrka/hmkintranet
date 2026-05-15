@@ -241,9 +241,8 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&cur
     document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' m/s';
     document.getElementById('wHum').textContent=Math.round(c.relative_humidity_2m)+'%';
   }).catch(()=>{document.getElementById('wDesc').textContent='Kunde inte hämta';});
-fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://www.bible.com/sv/verse-of-the-day'))
-  .then(r=>r.json()).then(data=>{
-    const html=data.contents;
+fetch('https://corsproxy.io/?url='+encodeURIComponent('https://www.bible.com/sv/verse-of-the-day'))
+  .then(r=>r.text()).then(html=>{
     const dm=html.match(/meta-og:description[^"]*"([^"]+)"/);
     const tm=html.match(/<title>Dagens vers - ([^<]+)<\/title>/);
     if(dm){
@@ -259,7 +258,7 @@ fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://www.bibl
       document.getElementById('bibleRef').textContent='Psaltaren 32:8';
     }
   }).catch(()=>{document.getElementById('bibleVerse').textContent='"Jag vill ge dig insikt och lära dig den väg du skall gå."';document.getElementById('bibleRef').textContent='Psaltaren 32:8';});
-const PROXY='https://api.allorigins.win/get?url=';
+const PROXY='https://corsproxy.io/?url=';
 function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
 function parseRender(xml,elId,src,max){
   try{
@@ -274,16 +273,20 @@ function parseRender(xml,elId,src,max){
     }).join('');
   }catch(e){document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';}
 }
-function fetchRSS(url,elId,src,max){fetch(PROXY+encodeURIComponent(url)).then(r=>r.json()).then(d=>parseRender(d.contents,elId,src,max)).catch(()=>{document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';});}
+function fetchRSS(url,elId,src,max){
+  fetch(PROXY+encodeURIComponent(url))
+    .then(r=>r.text())
+    .then(d=>parseRender(d,elId,src,max))
+    .catch(()=>{document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';});
+}
 // Uppdatera webcam var 60:e sekund
 setInterval(()=>{const img=document.getElementById('webcamImg');if(img)img.src='https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg?t='+Date.now();},60000);
 
 // Hämta händelser från kyrkans kalender
 const icalUrl='https://www.honomissionskyrka.se/?post_type=tribe_events&ical=1&eventDisplay=list';
 fetch(PROXY+encodeURIComponent(icalUrl))
-  .then(r=>r.json())
-  .then(data=>{
-    const ical=data.contents;
+  .then(r=>r.text())
+  .then(ical=>{
     const events=[];
     const now=new Date();
     const veventRegex=/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
@@ -293,14 +296,17 @@ fetch(PROXY+encodeURIComponent(icalUrl))
       const summary=(block.match(/SUMMARY:(.*)/)||[])[1]?.trim()||'';
       const dtstart=(block.match(/DTSTART[^:]*:(.*)/)||[])[1]?.trim()||'';
       if(!summary||!dtstart)continue;
-      let date;
+      let date,timeStr='';
       if(dtstart.includes('T')){
-        const d=dtstart.replace(/[^0-9T]/g,'');
-        date=new Date(d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T'+d.slice(9,11)+':'+d.slice(11,13)+':00');
+        const ds=dtstart.replace(/Z$/,'');
+        const yr=ds.slice(0,4),mo=ds.slice(4,6),dy=ds.slice(6,8);
+        const hr=ds.slice(9,11),mn=ds.slice(11,13);
+        date=new Date(yr+'-'+mo+'-'+dy+'T'+hr+':'+mn+':00');
+        timeStr='kl '+hr+':'+mn;
       } else {
         date=new Date(dtstart.slice(0,4)+'-'+dtstart.slice(4,6)+'-'+dtstart.slice(6,8));
       }
-      if(date>=now) events.push({summary,date});
+      if(date>=now) events.push({summary,date,timeStr});
     }
     events.sort((a,b)=>a.date-b.date);
     const top=events.slice(0,5);
@@ -312,8 +318,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
     document.getElementById('eventsBox').innerHTML=top.map(e=>{
       const day=e.date.getDate();
       const mon=months[e.date.getMonth()];
-      const time=dtstart.includes('T')?'kl '+String(e.date.getHours()).padStart(2,'0')+':'+String(e.date.getMinutes()).padStart(2,'0'):'';
-      return '<div class="ei"><div class="ed"><div class="dy">'+day+'</div><div class="mn">'+mon+'</div></div><div><div class="et">'+e.summary+'</div>'+(time?'<div class="etm">'+time+'</div>':'')+'</div></div>';
+      return '<div class="ei"><div class="ed"><div class="dy">'+day+'</div><div class="mn">'+mon+'</div></div><div><div class="et">'+e.summary+'</div>'+(e.timeStr?'<div class="etm">'+e.timeStr+'</div>':'')+'</div></div>';
     }).join('');
   }).catch(()=>{
     document.getElementById('eventsBox').innerHTML='<p class="loading">Kunde inte hämta händelser.</p>';
