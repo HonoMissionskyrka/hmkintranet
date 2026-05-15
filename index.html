@@ -165,20 +165,20 @@
       </div>
 
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagen</span></div>
-        <div class="cb" id="dagenNews"><p class="loading">Hämtar nyheter...</p></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händelser</span></div>
+        <div class="cb" id="eventsBox"><p class="loading">Hämtar händelser...</p></div>
       </div>
 
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händelser</span></div>
-        <div class="cb" id="eventsBox"><p class="loading">Hämtar händelser...</p></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagen</span></div>
+        <div class="cb" id="dagenNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
     </div>
 
     <!-- Rad 3: GP + SVT + Sändaren -->
     <div class="row3">
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>GP</span></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>Bohusläningen</span></div>
         <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
       <div class="card">
@@ -324,7 +324,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
     document.getElementById('eventsBox').innerHTML='<p class="loading">Kunde inte hämta händelser.</p>';
   });
 
-fetchRSS('http://www.gp.se/rss/index.jsp?d=113','gpNews','GP',4);
+fetchRSS('https://www.bohuslaningen.se/feed','gpNews','Bohusläningen',4);
 fetchRSS('https://www.svt.se/rss.xml','svtNews','SVT',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
 fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
