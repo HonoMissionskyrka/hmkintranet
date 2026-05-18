@@ -136,7 +136,7 @@
             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span>Policyer</span>
           </a>
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank">
+          <a class="ql-btn" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Kontakter</span>
           </a>
@@ -157,7 +157,7 @@
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Uthyrning/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Skerhet/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
+          <a class="lib-card" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
         </div>
       </div>
@@ -372,21 +372,27 @@ const bdMembers=[{"f":"Alice","e":"Abrahamsson","d":"2004-10-24"},{"f":"Birgitta
     const todayYear=today.getFullYear();
     
     // Beräkna dagar till nästa födelsedag
+    function parseLocalDate(datum){
+      const parts=datum.split('-');
+      return new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+    }
     function daysUntil(datum){
-      const bd=new Date(datum);
-      const thisYear=new Date(todayYear,bd.getMonth(),bd.getDate());
-      const nextYear=new Date(todayYear+1,bd.getMonth(),bd.getDate());
-      const diff=thisYear>=today?thisYear-today:nextYear-today;
+      const bd=parseLocalDate(datum);
+      const now=new Date(); now.setHours(0,0,0,0);
+      const thisYear=new Date(now.getFullYear(),bd.getMonth(),bd.getDate());
+      const nextYear=new Date(now.getFullYear()+1,bd.getMonth(),bd.getDate());
+      const diff=thisYear>=now?thisYear-now:nextYear-now;
       return Math.round(diff/86400000);
     }
     function age(datum){
-      const bd=new Date(datum);
-      const age=todayYear-bd.getFullYear();
-      const bday=new Date(todayYear,bd.getMonth(),bd.getDate());
-      return bday<=today?age:age-1;
+      const bd=parseLocalDate(datum);
+      const now=new Date(); now.setHours(0,0,0,0);
+      const yr=now.getFullYear();
+      const bday=new Date(yr,bd.getMonth(),bd.getDate());
+      return bday<=now?yr-bd.getFullYear():yr-bd.getFullYear()-1;
     }
     function fmtDate(datum){
-      const d=new Date(datum);
+      const d=parseLocalDate(datum);
       const mons=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
       return d.getDate()+' '+mons[d.getMonth()];
     }
