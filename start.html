@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hönö Missionskyrka — Intranät</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background: #718B94;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  .logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; }
+  .logo-wrap img { height: 64px; width: auto; filter: brightness(0) invert(1); margin-bottom: 10px; }
+  .logo-sub { color: rgba(255,255,255,0.65); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .gold-line { width: 60px; height: 2px; background: #C1A051; border-radius: 2px; margin: 18px auto 32px; }
+  .title { font-family: 'Playfair Display', serif; color: white; font-size: 28px; font-weight: 400; text-align: center; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.6); font-size: 13px; text-align: center; margin-bottom: 40px; letter-spacing: 0.04em; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 860px; width: 100%; }
+
+  .card {
+    background: white; border-radius: 16px; overflow: hidden;
+    text-decoration: none; box-shadow: 0 4px 24px rgba(40,38,38,0.18);
+    transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 36px rgba(40,38,38,0.28); }
+
+  .card-img-placeholder {
+    width: 100%; aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .card-img-placeholder::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 6px; background: #C1A051;
+  }
+  .card-img-placeholder span { color: white; font-size: 26px; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+  .card-body { padding: 14px 16px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .card-name { font-size: 14px; font-weight: 500; color: #282626; }
+  .card-desc { font-size: 11px; color: #AAACA0; margin-top: 2px; }
+  .card-arrow { width: 28px; height: 28px; background: #718B94; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+  .card:hover .card-arrow { background: #C1A051; }
+  .card-arrow svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Råd-knapp */
+  .rad-section { max-width: 860px; width: 100%; margin-top: 16px; }
+  .rad-toggle {
+    width: 100%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px; padding: 16px 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.2s;
+  }
+  .rad-toggle:hover { background: rgba(255,255,255,0.22); }
+  .rad-toggle-left { display: flex; align-items: center; gap: 12px; }
+  .rad-toggle-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .rad-toggle-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+  .rad-toggle-text { color: white; font-size: 15px; font-weight: 500; }
+  .rad-toggle-sub { color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 2px; }
+  .rad-chevron { transition: transform 0.3s; }
+  .rad-chevron svg { width: 20px; height: 20px; stroke: rgba(255,255,255,0.7); fill: none; stroke-width: 2; }
+  .rad-chevron.open { transform: rotate(180deg); }
+
+  .rad-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.3s;
+    margin-top: 0;
+  }
+  .rad-grid.open { max-height: 600px; margin-top: 12px; }
+
+  .rad-card {
+    background: white; border-radius: 12px; overflow: hidden;
+    text-decoration: none; box-shadow: 0 2px 12px rgba(40,38,38,0.15);
+    transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
+  }
+  .rad-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(40,38,38,0.22); }
+  .rad-card-head {
+    background: linear-gradient(135deg, #5a7079, #718B94);
+    padding: 16px; position: relative; overflow: hidden;
+  }
+  .rad-card-head::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: #C1A051; }
+  .rad-card-title { color: white; font-size: 13px; font-weight: 600; }
+  .rad-card-body { padding: 10px 14px 12px; display: flex; align-items: center; justify-content: space-between; }
+  .rad-card-email { font-size: 10px; color: #AAACA0; }
+  .rad-card-arrow { width: 22px; height: 22px; background: #718B94; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .rad-card:hover .rad-card-arrow { background: #C1A051; }
+  .rad-card-arrow svg { width: 11px; height: 11px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .footer { margin-top: 40px; color: rgba(255,255,255,0.35); font-size: 11px; text-align: center; letter-spacing: 0.06em; }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .rad-grid { grid-template-columns: repeat(2, 1fr); }
+    .title { font-size: 22px; }
+  }
+  @media (max-width: 400px) {
+    .grid { grid-template-columns: 1fr; }
+    .rad-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-wrap">
+  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <span class="logo-sub">Hönö Missionskyrka</span>
+</div>
+
+<div class="gold-line"></div>
+
+<h1 class="title">Välkommen till intranätet</h1>
+<p class="subtitle">Välj din inloggning nedan</p>
+
+<div class="grid">
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#718B94);">
+      <span>Personal</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Personal</div><div class="card-desc">personal@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Forsamlingsstyrelse">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#5a7079,#8fa5ad);">
+      <span>Styrelse</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Församlingsstyrelse</div><div class="card-desc">hmkstyrelse@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Konferensledning">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#5a7079);">
+      <span>Konferens­ledning</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Konferensledning</div><div class="card-desc">konferens@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HSCF-Bolagsstyrelse">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#718B94,#5a7079);">
+      <span>HSCF</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">HSCF AB</div><div class="card-desc">hscfstyrelse@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#5a7079,#718B94);">
+      <span>Medlem</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Församlingsmedlem</div><div class="card-desc">hmkmedlem@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personalrad">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#8fa5ad);">
+      <span>Personalråd</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Personalråd</div><div class="card-desc">personalrad@honomissionskyrka.se</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+</div>
+
+<!-- Råd-sektion -->
+<div class="rad-section">
+  <div class="rad-toggle" onclick="toggleRad()">
+    <div class="rad-toggle-left">
+      <div class="rad-toggle-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div>
+        <div class="rad-toggle-text">Råd</div>
+        <div class="rad-toggle-sub">Ungdomsråd, Musikråd, Verksamhetsråd och fler</div>
+      </div>
+    </div>
+    <div class="rad-chevron" id="radChevron">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+
+  <div class="rad-grid" id="radGrid">
+
+    <a class="rad-card" href="#">
+      <div class="rad-card-head"><div class="rad-card-title">Ungdomsråd</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">ungdomsrad@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="rad-card" href="#">
+      <div class="rad-card-head"><div class="rad-card-title">Musikråd</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">musikrad@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="rad-card" href="#">
+      <div class="rad-card-head"><div class="rad-card-title">Verksamhetsråd</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">verksamhetsrad@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="rad-card" href="#">
+      <div class="rad-card-head"><div class="rad-card-title">Missionsråd</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">missionsrad@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">HÖNÖ MISSIONSKYRKA &nbsp;·&nbsp; INTRANÄT</div>
+
+<script>
+function toggleRad() {
+  const grid = document.getElementById('radGrid');
+  const chevron = document.getElementById('radChevron');
+  grid.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+</script>
+</body>
+</html>
