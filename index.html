@@ -6,6 +6,33 @@
 <title>HMK Personalportal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  #login-screen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #718B94;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #login-screen img { height: 56px; filter: brightness(0) invert(1); margin-bottom: 10px; }
+  #login-screen .logo-sub { color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
+  #login-screen .gold-line { width: 50px; height: 2px; background: #C1A051; border-radius: 2px; margin: 16px auto 28px; }
+  #login-screen h2 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; font-weight: 400; margin-bottom: 24px; }
+  #login-screen input {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px; padding: 12px 20px; color: white; font-size: 15px;
+    font-family: 'DM Sans', sans-serif; width: 260px; outline: none; text-align: center;
+    letter-spacing: 0.1em; transition: border 0.2s;
+  }
+  #login-screen input::placeholder { color: rgba(255,255,255,0.45); letter-spacing: 0.04em; }
+  #login-screen input:focus { border-color: #C1A051; }
+  #login-screen button {
+    margin-top: 14px; width: 260px; padding: 12px;
+    background: #C1A051; border: none; border-radius: 10px;
+    color: white; font-size: 14px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    letter-spacing: 0.06em; transition: background 0.2s;
+  }
+  #login-screen button:hover { background: #d4b870; }
   :root {
     --teal: #718B94;
     --teal-dark: #4a6670;
@@ -99,6 +126,17 @@
 </style>
 </head>
 <body>
+
+<div id="login-screen">
+  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <span class="logo-sub">Hönö Missionskyrka</span>
+  <div class="gold-line"></div>
+  <h2>Personalportal</h2>
+  <input type="password" id="pwInput" placeholder="Lösenord" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()">Logga in</button>
+  <div class="error" id="pwError"></div>
+  <a href="https://honomissionskyrka.github.io/hmkintranet/start.html" style="margin-top:20px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;letter-spacing:0.06em;">← Tillbaka till startsidan</a>
+</div>
 
 <div class="header">
   <img class="header-logo" src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
@@ -464,6 +502,21 @@ fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
 fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
 fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
+
+function checkPw(){
+  const val=document.getElementById('pwInput').value.toLowerCase().trim();
+  if(val==='paulus'){
+    document.getElementById('login-screen').style.display='none';
+    sessionStorage.setItem('hmk_auth','1');
+  } else {
+    document.getElementById('pwError').textContent='Fel lösenord, försök igen.';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+  }
+}
+if(sessionStorage.getItem('hmk_auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+}
 </script>
 </body>
 </html>
