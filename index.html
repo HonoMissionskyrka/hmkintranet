@@ -505,7 +505,7 @@ fetch(PROXY+encodeURIComponent(icalUrl))
 fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
 fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
-fetchRSS('https://sandaren.se/rss','sandarenNews','Sändaren',4);
+fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4);
 
 function checkPw(){
   const val=document.getElementById('pwInput').value.toLowerCase().trim();
