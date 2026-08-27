@@ -33,6 +33,8 @@
     letter-spacing: 0.06em; transition: background 0.2s;
   }
   #login-screen button:hover { background: #d4b870; }
+  /* Saknades tidigare – felmeddelandet vid fel lösenord syntes inte */
+  #login-screen .error { color: #f5d9d9; font-size: 12px; margin-top: 14px; min-height: 16px; letter-spacing: 0.03em; }
   :root {
     --teal: #718B94;
     --teal-dark: #4a6670;
@@ -158,7 +160,11 @@
             <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             <span>Personal­handbok</span>
           </a>
-          <a class="ql-btn" href="https://honomissionskyrka-my.sharepoint.com" target="_blank">
+          <!-- ÄNDRAD: pekade tidigare på OneDrive-roten (honomissionskyrka-my.sharepoint.com).
+               Pekar nu på det nya biblioteket "Mina dokument" på HMK-Personal.
+               Kontrollera internnamnet efter att biblioteket skapats – SharePoint kan
+               ha gjort om "Mina dokument" till "Mina%20dokument" eller "Minadokument". -->
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Mina%20dokument/Forms/AllItems.aspx" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
             <span>Mina dokument</span>
           </a>
@@ -182,6 +188,8 @@
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Kontakter</span>
           </a>
+          <!-- OBS: pekar på rot-sajtens dokumentbibliotek, inte HMK-Personal.
+               Kontrollera att Anders, Magdalena och Joel har åtkomst dit. -->
           <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/Delade%20dokument/Datafiler/fodelsedagar.html" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Födelse­dagar</span>
@@ -190,7 +198,7 @@
       </div>
     </div>
 
-    <!-- Bibliotekskort där bibelordet var -->
+    <!-- Bibliotekskort -->
     <div class="card">
       <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Mina bibliotek</span></div>
       <div class="cb" style="padding:8px;">
@@ -198,14 +206,18 @@
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Uthyrning/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
+          <!-- KONTROLLERA: biblioteket heter "Skerhet" i URL:en (utan ä).
+               Öppna biblioteket i SharePoint och jämför med adressfältet. -->
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Skerhet/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
           <a class="lib-card" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+          <!-- ÄNDRAD: pekade tidigare på Personalhandbok, alltså samma mål som första rutan.
+               Pekar nu på sajtens innehållsöversikt tills du bestämt vart den ska gå. -->
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/_layouts/15/viewlsts.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
         </div>
       </div>
     </div>
 
-    <!-- Rad 2: Väder + Dagen + Händelser -->
+    <!-- Rad 2: Väder + Händelser + Dagen -->
     <div class="row2">
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Väder — Hönö</span></div>
@@ -240,7 +252,7 @@
       </div>
     </div>
 
-    <!-- Rad 3: GP + SVT + Sändaren -->
+    <!-- Rad 3: DN + SVT + Sändaren -->
     <div class="row3">
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>Dagens Nyheter</span></div>
@@ -258,9 +270,8 @@
 
   </div>
 
-  <!-- RIGHT -->
+  <!-- HÖGERKOLUMN -->
   <div class="right-col">
-    <!-- Bibelord överst i högerpanelen -->
     <div class="card">
       <div class="ch gold"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagens bibelord</span></div>
       <div class="cb" style="display:flex;gap:14px;align-items:flex-start;">
@@ -279,7 +290,8 @@
       <a class="lp-item" href="https://www.equmeniakyrkan.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div><div class="lp-txt">Riksorganisationen</div><div class="lp-sub">Equmeniakyrkan</div></div></a>
       <a class="lp-item" href="https://www.hitta.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Hitta personer &amp; företag</div><div class="lp-sub">Hitta.se</div></div></a>
       <a class="lp-item" href="https://www.ica.se/artikel/nyttig-veckomeny/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div><div><div class="lp-txt">Veckans meny</div><div class="lp-sub">ICA</div></div></a>
-      <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
+      <!-- ÄNDRAD: pekade tidigare direkt på bildfilen. Går nu till webbkamerans sida. -->
+      <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
       <div class="lp-more">→ Visa fler länkar</div>
     </div>
 
@@ -367,6 +379,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&cur
     document.getElementById('wHum').textContent=Math.round(c.relative_humidity_2m)+'%';
     document.getElementById('wUV').textContent=c.uv_index?.toFixed(1)??'–';
   }).catch(()=>{document.getElementById('wDesc').textContent='Kunde inte hämta';});
+
 // Hämta dagens bibelord från dedikerat API
 async function loadVerse() {
   try {
@@ -382,7 +395,17 @@ async function loadVerse() {
 }
 loadVerse();
 setInterval(loadVerse, 3600000);
+
+/* ---------------------------------------------------------------
+   RSS-HÄMTNING
+   corsproxy.io returnerar fel på svar över 1 MB. Sändarens flöde
+   innehåller hela artikeltexter och överskrider den gränsen, därför
+   går just det flödet via allorigins istället. Skicka proxy som
+   femte argument till fetchRSS för att välja den alternativa.
+--------------------------------------------------------------- */
 const PROXY='https://corsproxy.io/?url=';
+const PROXY_ALT='https://api.allorigins.win/raw?url=';
+
 function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
 function parseRender(xml,elId,src,max){
   try{
@@ -397,12 +420,13 @@ function parseRender(xml,elId,src,max){
     }).join('');
   }catch(e){document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';}
 }
-function fetchRSS(url,elId,src,max){
-  fetch(PROXY+encodeURIComponent(url))
+function fetchRSS(url,elId,src,max,proxy){
+  fetch((proxy||PROXY)+encodeURIComponent(url))
     .then(r=>r.text())
     .then(d=>parseRender(d,elId,src,max))
     .catch(()=>{document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';});
 }
+
 // Uppdatera webcam var 60:e sekund
 setInterval(()=>{const img=document.getElementById('webcamImg');if(img)img.src='https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg?t='+Date.now();},60000);
 
@@ -412,7 +436,7 @@ const bdMembers=[{"f":"Alice","e":"Abrahamsson","d":"2004-10-24"},{"f":"Birgitta
     const today=new Date();
     const todayMD=(today.getMonth()+1).toString().padStart(2,'0')+'-'+today.getDate().toString().padStart(2,'0');
     const todayYear=today.getFullYear();
-    
+
     // Beräkna dagar till nästa födelsedag
     function parseLocalDate(datum){
       const parts=datum.split('-');
@@ -438,11 +462,11 @@ const bdMembers=[{"f":"Alice","e":"Abrahamsson","d":"2004-10-24"},{"f":"Birgitta
       const mons=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
       return d.getDate()+' '+mons[d.getMonth()];
     }
-    
+
     // Sortera efter nästa födelsedag
     const sorted=members.map(m=>({...m,days:daysUntil(m.d)})).sort((a,b)=>a.days-b.days);
     const upcoming=sorted.slice(0,8);
-    
+
     const html=upcoming.map(m=>{
       const isToday=m.days===0;
       const nextAge=age(m.d)+(isToday?0:1);
@@ -457,7 +481,7 @@ const bdMembers=[{"f":"Alice","e":"Abrahamsson","d":"2004-10-24"},{"f":"Birgitta
         <div style="font-size:10px;font-weight:600;color:${dayCol};text-align:right;min-width:52px;">${daysTxt}</div>
       </div>`;
     }).join('');
-    
+
     document.getElementById('bdList').innerHTML=html||'<p style="padding:10px 15px;font-size:11px;color:#AAACA0;">Inga kommande födelsedagar.</p>';
   }})();
 
@@ -505,7 +529,8 @@ fetch(PROXY+encodeURIComponent(icalUrl))
 fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
 fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
-fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4);
+// Sändaren går via PROXY_ALT eftersom flödet är för stort för corsproxy.io
+fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4,PROXY_ALT);
 
 function checkPw(){
   const val=document.getElementById('pwInput').value.toLowerCase().trim();
