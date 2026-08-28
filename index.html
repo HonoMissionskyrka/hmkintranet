@@ -401,7 +401,7 @@ setInterval(loadVerse, 3600000);
    går just det flödet via allorigins istället. Skicka proxy som
    femte argument till fetchRSS för att välja den alternativa.
 --------------------------------------------------------------- */
-const PROXY='https://corsproxy.io/?url=';
+const PROXY='https://api.allorigins.win/raw?url=';
 const PROXY_ALT='https://api.allorigins.win/raw?url=';
 
 function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
