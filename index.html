@@ -160,8 +160,8 @@
             <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             <span>Personal­handbok</span>
           </a>
-                    <!-- Pekar på biblioteket "Mina Dokument" på HMK-Personal.
-               Behörigheterna är satta per mapp, så var och en ser bara sin egen. -->
+          <!-- Biblioteket "Mina Dokument" på HMK-Personal. Varje anställd har en egen
+               mapp med unika behörigheter – ingen kommer åt någon annans mapp. -->
           <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Mina%20Dokument/Forms/AllItems.aspx" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
             <span>Mina dokument</span>
@@ -208,9 +208,10 @@
                Öppna biblioteket i SharePoint och jämför med adressfältet. -->
           <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Skerhet/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
           <a class="lib-card" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
-          <!-- ÄNDRAD: pekade tidigare på Personalhandbok, alltså samma mål som första rutan.
-               Pekar nu på sajtens innehållsöversikt tills du bestämt vart den ska gå. -->
-                    <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Ovrigt/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+          <!-- ÄNDRAD: pekade tidigare på /_layouts/15/viewlsts.aspx, vilket visade hela
+               sajtens innehåll för personalen. Pekar nu på det nya biblioteket Ovrigt
+               (ASCII-URL, visningsnamn "Övrigt"). -->
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Ovrigt/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
         </div>
       </div>
     </div>
@@ -288,8 +289,8 @@
       <a class="lp-item" href="https://www.equmeniakyrkan.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div><div class="lp-txt">Riksorganisationen</div><div class="lp-sub">Equmeniakyrkan</div></div></a>
       <a class="lp-item" href="https://www.hitta.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Hitta personer &amp; företag</div><div class="lp-sub">Hitta.se</div></div></a>
       <a class="lp-item" href="https://www.ica.se/artikel/nyttig-veckomeny/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div><div><div class="lp-txt">Veckans meny</div><div class="lp-sub">ICA</div></div></a>
-      <!-- ÄNDRAD: pekade tidigare direkt på bildfilen. Går nu till webbkamerans sida. -->
-      <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
+      <!-- Direkt till bildfilen, så att man kan klicka upp kameran i storbild. -->
+      <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
       <div class="lp-more">→ Visa fler länkar</div>
     </div>
 
@@ -395,34 +396,87 @@ loadVerse();
 setInterval(loadVerse, 3600000);
 
 /* ---------------------------------------------------------------
-   RSS-HÄMTNING
-   corsproxy.io returnerar fel på svar över 1 MB. Sändarens flöde
-   innehåller hela artikeltexter och överskrider den gränsen, därför
-   går just det flödet via allorigins istället. Skicka proxy som
-   femte argument till fetchRSS för att välja den alternativa.
+   RSS-HÄMTNING MED PROXYKEDJA
+
+   GitHub Pages kan inte hämta RSS direkt från andra domäner – det
+   kräver en proxy. Tidigare användes en enda proxy, vilket innebar
+   att samtliga widgetar slocknade så fort den tjänsten gick ner
+   (corsproxy.io började kräva API-nyckel, allorigins svarade 500).
+
+   Nu provas flera proxyer i tur och ordning. Först den som svarar
+   korrekt används. Slutar en tjänst fungera hoppar koden vidare
+   till nästa av sig själv, utan att något behöver ändras här.
+
+   Som sista utväg för nyhetsflöden används rss2json, som själv
+   läser flödet och returnerar färdig JSON. Den klarar även stora
+   flöden som Sändarens, där hela artikeltexter ligger med.
 --------------------------------------------------------------- */
-const PROXY='https://api.allorigins.win/raw?url=';
-const PROXY_ALT='https://api.allorigins.win/raw?url=';
+const PROXIES=[
+  'https://api.codetabs.com/v1/proxy?quest=',
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?url='
+];
+const RSS2JSON='https://api.rss2json.com/v1/api.json?rss_url=';
+
+// Provar varje proxy i tur och ordning, returnerar första giltiga svaret
+async function fetchViaProxy(url){
+  let lastErr;
+  for(const proxy of PROXIES){
+    try{
+      const res=await fetch(proxy+encodeURIComponent(url));
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const text=await res.text();
+      if(!text||text.length<50) throw new Error('Tomt svar');
+      if(text.trim().charAt(0)==='{'&&text.indexOf('"error"')!==-1) throw new Error('Proxyfel: '+text.slice(0,120));
+      return text;
+    }catch(err){
+      lastErr=err;
+      console.warn('Proxy misslyckades:',proxy,err.message);
+    }
+  }
+  throw lastErr||new Error('Alla proxyer misslyckades');
+}
 
 function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
-function parseRender(xml,elId,src,max){
-  try{
-    const doc=new DOMParser().parseFromString(xml,'text/xml');
-    const items=Array.from(doc.querySelectorAll('item')).slice(0,max);
-    if(!items.length)throw new Error();
-    document.getElementById(elId).innerHTML=items.map(i=>{
-      const t=i.querySelector('title')?.textContent||'';
-      const l=i.querySelector('link')?.textContent||'#';
-      const p=i.querySelector('pubDate')?.textContent||'';
-      return '<div class="ni"><div class="ns">'+src+'</div><div class="nt"><a href="'+l+'" target="_blank">'+t+'</a></div>'+(p?'<div class="ntm">'+timeAgo(p)+'</div>':'')+'</div>';
-    }).join('');
-  }catch(e){document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';}
+
+function renderItems(list,elId,src){
+  if(!list.length){document.getElementById(elId).innerHTML='<p class="ne">Inga nyheter just nu.</p>';return;}
+  document.getElementById(elId).innerHTML=list.map(i=>
+    '<div class="ni"><div class="ns">'+src+'</div><div class="nt"><a href="'+(i.link||'#')+'" target="_blank">'+i.title+'</a></div>'+
+    (i.pub?'<div class="ntm">'+timeAgo(i.pub)+'</div>':'')+'</div>'
+  ).join('');
 }
-function fetchRSS(url,elId,src,max,proxy){
-  fetch((proxy||PROXY)+encodeURIComponent(url))
-    .then(r=>r.text())
-    .then(d=>parseRender(d,elId,src,max))
-    .catch(()=>{document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';});
+
+function parseXML(xml,max){
+  const doc=new DOMParser().parseFromString(xml,'text/xml');
+  return Array.from(doc.querySelectorAll('item')).slice(0,max).map(i=>({
+    title:i.querySelector('title')?.textContent||'',
+    link:i.querySelector('link')?.textContent||'#',
+    pub:i.querySelector('pubDate')?.textContent||''
+  })).filter(i=>i.title);
+}
+
+async function fetchRSS(url,elId,src,max){
+  // Försök 1: hämta rå XML via proxykedjan
+  try{
+    const items=parseXML(await fetchViaProxy(url),max);
+    if(items.length){renderItems(items,elId,src);return;}
+    throw new Error('Inga poster i flödet');
+  }catch(err){
+    console.warn('XML-hämtning misslyckades för',src,err.message);
+  }
+  // Försök 2: rss2json läser flödet åt oss och returnerar JSON
+  try{
+    const res=await fetch(RSS2JSON+encodeURIComponent(url));
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items) throw new Error(data.message||'rss2json-fel');
+    renderItems(data.items.slice(0,max).map(i=>({
+      title:i.title,link:i.link,pub:i.pubDate
+    })),elId,src);
+  }catch(err){
+    console.warn('rss2json misslyckades för',src,err.message);
+    document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';
+  }
 }
 
 // Uppdatera webcam var 60:e sekund
@@ -484,9 +538,9 @@ const bdMembers=[{"f":"Alice","e":"Abrahamsson","d":"2004-10-24"},{"f":"Birgitta
   }})();
 
 const icalUrl='https://www.honomissionskyrka.se/?post_type=tribe_events&ical=1&eventDisplay=list';
-fetch(PROXY+encodeURIComponent(icalUrl))
-  .then(r=>r.text())
-  .then(ical=>{
+(async function(){
+  try{
+    const ical=await fetchViaProxy(icalUrl);
     const events=[];
     const now=new Date();
     const veventRegex=/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
@@ -520,15 +574,16 @@ fetch(PROXY+encodeURIComponent(icalUrl))
       const mon=months[e.date.getMonth()];
       return '<div class="ei"><div class="ed"><div class="dy">'+day+'</div><div class="mn">'+mon+'</div></div><div><div class="et">'+e.summary+'</div>'+(e.timeStr?'<div class="etm">'+e.timeStr+'</div>':'')+'</div></div>';
     }).join('');
-  }).catch(()=>{
+  }catch(err){
+    console.warn('Kalenderhämtning misslyckades:',err.message);
     document.getElementById('eventsBox').innerHTML='<p class="loading">Kunde inte hämta händelser.</p>';
-  });
+  }
+})();
 
 fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
 fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
-// Sändaren går via PROXY_ALT eftersom flödet är för stort för corsproxy.io
-fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4,PROXY_ALT);
+fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4);
 
 function checkPw(){
   const val=document.getElementById('pwInput').value.toLowerCase().trim();
