@@ -411,19 +411,22 @@ setInterval(loadVerse, 3600000);
    läser flödet och returnerar färdig JSON. Den klarar även stora
    flöden som Sändarens, där hela artikeltexter ligger med.
 --------------------------------------------------------------- */
+// Proxyer för rå text (används av kalendern). Testade 2026-10-04:
+// r.jina.ai svarar, codetabs och allorigins gör det inte längre.
+// Varje anrop har en egen tidsgräns så att en död tjänst inte kan
+// låsa sidan – den hoppas över efter tio sekunder.
 const PROXIES=[
+  'https://r.jina.ai/',
   'https://api.codetabs.com/v1/proxy?quest=',
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.io/?url='
+  'https://api.allorigins.win/raw?url='
 ];
 const RSS2JSON='https://api.rss2json.com/v1/api.json?rss_url=';
 
-// Provar varje proxy i tur och ordning, returnerar första giltiga svaret
 async function fetchViaProxy(url){
   let lastErr;
   for(const proxy of PROXIES){
     try{
-      const res=await fetch(proxy+encodeURIComponent(url));
+      const res=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});
       if(!res.ok) throw new Error('HTTP '+res.status);
       const text=await res.text();
       if(!text||text.length<50) throw new Error('Tomt svar');
@@ -431,13 +434,23 @@ async function fetchViaProxy(url){
       return text;
     }catch(err){
       lastErr=err;
-      console.warn('Proxy misslyckades:',proxy,err.message);
+      console.warn('Proxy misslyckades:',proxy,err.name+' '+err.message);
     }
   }
   throw lastErr||new Error('Alla proxyer misslyckades');
 }
 
-function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
+function timeAgo(ds){
+  // rss2json lämnar datum som "2026-10-04 18:30:00" – ersätt mellanslaget
+  // med T så att alla browsers tolkar det likadant.
+  const d=new Date(String(ds).trim().replace(' ','T'));
+  if(isNaN(d)) return '';
+  const diff=(Date.now()-d)/60000;
+  if(diff<0) return 'nyss';
+  if(diff<60) return Math.round(diff)+' min sedan';
+  if(diff<1440) return Math.round(diff/60)+' tim sedan';
+  return Math.round(diff/1440)+' dag(ar) sedan';
+}
 
 function renderItems(list,elId,src){
   if(!list.length){document.getElementById(elId).innerHTML='<p class="ne">Inga nyheter just nu.</p>';return;}
@@ -457,24 +470,26 @@ function parseXML(xml,max){
 }
 
 async function fetchRSS(url,elId,src,max){
-  // Försök 1: hämta rå XML via proxykedjan
+  // Försök 1: rss2json. Den läser flödet på sin egen server och lämnar
+  // färdig JSON, så ingen CORS-proxy behövs. Klarar även Sändarens
+  // stora flöde som tidigare sprängde 1 MB-gränsen hos corsproxy.io.
   try{
-    const items=parseXML(await fetchViaProxy(url),max);
+    const res=await fetch(RSS2JSON+encodeURIComponent(url),{signal:AbortSignal.timeout(12000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items) throw new Error(data.message||'rss2json-fel');
+    const items=data.items.slice(0,max).map(i=>({title:i.title,link:i.link,pub:i.pubDate}));
     if(items.length){renderItems(items,elId,src);return;}
     throw new Error('Inga poster i flödet');
   }catch(err){
-    console.warn('XML-hämtning misslyckades för',src,err.message);
+    console.warn('rss2json misslyckades för',src,err.name+' '+err.message);
   }
-  // Försök 2: rss2json läser flödet åt oss och returnerar JSON
+  // Försök 2: rå XML via proxykedjan, om rss2json ligger nere
   try{
-    const res=await fetch(RSS2JSON+encodeURIComponent(url));
-    const data=await res.json();
-    if(data.status!=='ok'||!data.items) throw new Error(data.message||'rss2json-fel');
-    renderItems(data.items.slice(0,max).map(i=>({
-      title:i.title,link:i.link,pub:i.pubDate
-    })),elId,src);
+    const items=parseXML(await fetchViaProxy(url),max);
+    if(!items.length) throw new Error('Inga poster i flödet');
+    renderItems(items,elId,src);
   }catch(err){
-    console.warn('rss2json misslyckades för',src,err.message);
+    console.warn('XML-hämtning misslyckades för',src,err.name+' '+err.message);
     document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';
   }
 }
