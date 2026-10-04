@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fråga om medlemmarna — HMK</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#718B94; --teal-dark:#4a6670; --teal-light:#8fa5ad;
+    --gold:#C1A051; --gold-light:#d4b870;
+    --dark:#282626; --olive:#AAACA0; --bg:#eef0ee; --white:#fff; --line:#e6e3dd;
+    --radius:14px; --shadow:0 4px 24px rgba(40,38,38,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;}
+
+  .header{background:var(--teal);padding:0 32px;height:68px;display:flex;align-items:center;
+    justify-content:space-between;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:50;
+    box-shadow:0 2px 16px rgba(40,38,38,0.08);}
+  .header-logo{height:44px;filter:brightness(0) invert(1);}
+  .back{color:rgba(255,255,255,0.72);font-size:12px;text-decoration:none;letter-spacing:0.05em;
+    padding:7px 15px;border-radius:99px;border:1px solid rgba(255,255,255,0.28);transition:all .15s;}
+  .back:hover{background:rgba(255,255,255,0.14);color:#fff;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 60px;}
+  .title{font-family:'Playfair Display',serif;font-size:28px;font-weight:600;}
+  .lede{color:var(--olive);font-size:13px;margin-top:5px;}
+
+  /* ---- Frågerutan ---- */
+  .askbox{position:relative;margin-top:22px;}
+  .askbox svg.lupp{position:absolute;left:19px;top:50%;transform:translateY(-50%);
+    width:19px;height:19px;stroke:var(--teal-light);fill:none;stroke-width:2;pointer-events:none;}
+  #fraga{width:100%;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--dark);
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    padding:17px 112px 17px 50px;outline:none;box-shadow:var(--shadow);
+    transition:border-color .15s,box-shadow .15s;}
+  #fraga::placeholder{color:#b9bdb5;}
+  #fraga:focus{border-color:var(--gold);box-shadow:0 4px 28px rgba(193,160,81,0.18);}
+  #btnRensa{position:absolute;right:13px;top:50%;transform:translateY(-50%);
+    font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--olive);
+    background:#f2f4f1;border:1px solid var(--line);border-radius:99px;padding:7px 14px;
+    cursor:pointer;transition:all .15s;}
+  #btnRensa:hover{border-color:var(--gold);color:var(--teal-dark);}
+
+  .exempel{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;align-items:center;}
+  .exempel > span{font-size:10px;color:var(--olive);text-transform:uppercase;
+    letter-spacing:0.08em;font-weight:600;margin-right:3px;}
+  .ex{font-family:'DM Sans',sans-serif;font-size:11.5px;color:var(--teal-dark);background:#f2f4f1;
+    border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;transition:all .15s;}
+  .ex:hover{border-color:var(--gold);background:#f7f3e9;}
+
+  /* ---- Svaret ---- */
+  .svar{margin-top:22px;background:var(--white);border-radius:var(--radius);
+    box-shadow:var(--shadow);border-left:4px solid var(--gold);padding:19px 24px;}
+  .svar .mening{font-family:'Playfair Display',serif;font-size:19px;line-height:1.5;font-weight:400;}
+  .svar .mening b{color:var(--teal-dark);font-weight:700;}
+  .svar .detalj{font-size:12px;color:var(--olive);margin-top:7px;}
+  .svar.miss{border-left-color:var(--teal-light);}
+  .svar.miss .mening{font-size:16px;color:var(--dark);}
+
+  .verktyg{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
+  button.act{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--teal-dark);
+    background:#f2f4f1;border:1px solid var(--line);border-radius:9px;padding:8px 15px;cursor:pointer;
+    display:flex;align-items:center;gap:7px;transition:all .15s;}
+  button.act:hover{border-color:var(--gold);background:#f7f3e9;}
+  button.act svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+  button.act.klar{background:var(--gold);border-color:var(--gold);color:#fff;}
+
+  /* ---- Resultattabell ---- */
+  .results{margin-top:12px;background:var(--white);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;}
+  table{width:100%;border-collapse:collapse;}
+  thead th{background:#f7f6f3;font-size:10px;color:var(--olive);text-transform:uppercase;
+    letter-spacing:0.07em;font-weight:600;text-align:left;padding:11px 20px;
+    border-bottom:1px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap;}
+  thead th:hover{color:var(--teal-dark);}
+  thead th .pil{opacity:0;margin-left:4px;font-size:9px;}
+  thead th.sorted .pil{opacity:1;color:var(--gold);}
+  tbody td{padding:11px 20px;font-size:13px;border-bottom:1px solid #f5f3ef;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#faf9f6;}
+  tbody tr.idag{background:#f8f4ea;}
+  .namn{font-weight:500;}
+  .datum,.nasta{color:var(--olive);font-size:12px;white-space:nowrap;}
+  .alder{font-weight:600;color:var(--teal-dark);white-space:nowrap;}
+  .flagga{display:inline-block;background:var(--gold);color:#fff;font-size:9px;font-weight:600;
+    letter-spacing:0.05em;text-transform:uppercase;border-radius:99px;padding:2px 8px;margin-left:7px;}
+
+
+  /* ---- Låsskärm ---- */
+  #las{position:fixed;inset:0;z-index:999;background:var(--teal);display:flex;
+    flex-direction:column;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;}
+  #las img{height:52px;filter:brightness(0) invert(1);margin-bottom:10px;}
+  #las .sub{color:rgba(255,255,255,0.6);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;}
+  #las .streck{width:50px;height:2px;background:var(--gold);border-radius:2px;margin:16px auto 26px;}
+  #las h2{font-family:'Playfair Display',serif;color:#fff;font-size:21px;font-weight:400;margin-bottom:22px;}
+  #las input{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:10px;
+    padding:12px 20px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;width:280px;outline:none;
+    text-align:center;letter-spacing:0.08em;transition:border-color .2s;}
+  #las input::placeholder{color:rgba(255,255,255,0.45);letter-spacing:0.04em;}
+  #las input:focus{border-color:var(--gold);}
+  #las button{margin-top:14px;width:280px;padding:12px;background:var(--gold);border:none;
+    border-radius:10px;color:#fff;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;
+    cursor:pointer;letter-spacing:0.06em;transition:background .2s;}
+  #las button:hover:not(:disabled){background:var(--gold-light);}
+  #las button:disabled{background:rgba(255,255,255,0.25);cursor:wait;}
+  #las .fel{color:#f5d9d9;font-size:12px;margin-top:14px;min-height:17px;letter-spacing:0.03em;text-align:center;max-width:300px;line-height:1.5;}
+  #las a{margin-top:20px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;letter-spacing:0.05em;}
+
+  @media (max-width:760px){
+    .header{padding:0 18px;} .wrap{padding:22px 16px 50px;}
+    #fraga{font-size:15px;padding:15px 16px 15px 46px;}
+    #btnRensa{display:none;}
+    thead th:nth-child(4),tbody td:nth-child(4){display:none;}
+  }
+  @media print{
+    .header,.askbox,.exempel,.verktyg,.back{display:none!important;}
+    body{background:#fff;} .wrap{padding:0;max-width:none;}
+    .svar,.results{box-shadow:none;border:1px solid #ddd;}
+    tbody tr:hover{background:none;}
+  }
+</style>
+</head>
+<body>
+
+
+<div id="las">
+  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="" onerror="this.style.display='none'">
+  <span class="sub">Hönö Missionskyrka</span>
+  <div class="streck"></div>
+  <h2>Medlemsregistret är låst</h2>
+  <input type="password" id="lasOrd" placeholder="Lösenfras" autocomplete="current-password">
+  <button id="lasKnapp">Lås upp</button>
+  <div class="fel" id="lasFel"></div>
+  <a href="https://honomissionskyrka.github.io/hmkintranet/index.html">← Tillbaka till portalen</a>
+</div>
+
+<div class="header">
+  <img class="header-logo" src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <a class="back" href="https://honomissionskyrka.github.io/hmkintranet/index.html">← Tillbaka till portalen</a>
+</div>
+
+<div class="wrap">
+  <h1 class="title">Fråga om medlemmarna</h1>
+  <p class="lede" id="lede">Skriv din fråga med egna ord.</p>
+
+  <div class="askbox">
+    <svg class="lupp" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="fraga" autocomplete="off" spellcheck="false"
+           placeholder="t.ex. vilka är mellan 50 och 60 år?">
+    <button id="btnRensa">Rensa</button>
+  </div>
+
+  <div class="exempel" id="exempel"><span>Prova</span></div>
+
+  <div class="svar" id="svar">
+    <div class="mening" id="mening"></div>
+    <div class="detalj" id="detalj"></div>
+  </div>
+
+  <div class="verktyg" id="verktyg" style="display:none;">
+    <button class="act" id="btnKopiera">
+      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Kopiera listan
+    </button>
+    <button class="act" id="btnSkriv">
+      <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Skriv ut
+    </button>
+  </div>
+
+  <div class="results" id="results" style="display:none;">
+    <table>
+      <thead><tr>
+        <th data-sort="namn">Namn <span class="pil">▼</span></th>
+        <th data-sort="alder">Ålder <span class="pil">▼</span></th>
+        <th data-sort="datum">Födelsedag <span class="pil">▼</span></th>
+        <th data-sort="nasta">Nästa födelsedag <span class="pil">▼</span></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/* =================================================================
+   FRÅGA OM MEDLEMMARNA
+
+   Frågorna tolkas här i sidan — ingen tjänst anropas, ingen nyckel
+   ligger i filen och ingenting kostar pengar. Tolken förstår ålder,
+   namn, födelsemånad och födelseår i fri text på svenska.
+
+   Medlemsdatan ligger bara i den här filen.
+================================================================= */
+/* Medlemslistan ligger AES-GCM-krypterad. Nyckeln härleds ur lösenfrasen
+   med PBKDF2 (300 000 varv). Utan rätt lösenfras finns ingen läsbar data
+   i filen — varken namn, födelsedatum eller antal.
+   Byt ut strängen nedan mot den som kryptera-medlemmar.html ger dig. */
+const KRYPTERAD='__KRYPTERAD_DATA__';
+
+let medlemmar=[];
+
+async function harledNyckel(losen,salt,anvandning){
+  const bas=await crypto.subtle.importKey('raw',new TextEncoder().encode(losen),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:300000,hash:'SHA-256'},
+    bas,{name:'AES-GCM',length:256},false,[anvandning]);
+}
+async function dekryptera(blob,losen){
+  const rad=Uint8Array.from(atob(blob),c=>c.charCodeAt(0));
+  const salt=rad.slice(0,16), iv=rad.slice(16,28), data=rad.slice(28);
+  const nyckel=await harledNyckel(losen,salt,'decrypt');
+  const klartext=await crypto.subtle.decrypt({name:'AES-GCM',iv},nyckel,data);
+  return JSON.parse(new TextDecoder().decode(klartext));
+}
+
+const manader=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const manKort=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+
+function lokaltDatum(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+const idag=new Date(); idag.setHours(0,0,0,0);
+
+function raknaAlder(s){
+  const f=lokaltDatum(s), y=idag.getFullYear();
+  return new Date(y,f.getMonth(),f.getDate())<=idag ? y-f.getFullYear() : y-f.getFullYear()-1;
+}
+function dagarTill(s){
+  const f=lokaltDatum(s);
+  const iAr=new Date(idag.getFullYear(),f.getMonth(),f.getDate());
+  const nasta=new Date(idag.getFullYear()+1,f.getMonth(),f.getDate());
+  return Math.round(((iAr>=idag?iAr:nasta)-idag)/86400000);
+}
+function datumText(s){const d=lokaltDatum(s);return d.getDate()+' '+manKort[d.getMonth()];}
+function nastaText(d){
+  if(d===0)return 'idag';
+  if(d===1)return 'imorgon';
+  if(d<31) return 'om '+d+' dagar';
+  return 'om '+Math.round(d/30.4)+' mån';
+}
+
+// Fylls när listan dekrypterats
+let bas=[];
+function byggBas(){ bas=medlemmar.map(m=>{
+  const d=lokaltDatum(m.d);
+  return {
+    namn:(m.f+' '+m.e).trim(),
+    sortNamn:(m.e+' '+m.f).toLowerCase(),
+    sok:(m.f+' '+m.e).toLowerCase(),
+    datum:m.d, ar:d.getFullYear(), manad:d.getMonth(),
+    dagINamn:d.getMonth()*100+d.getDate(),
+    alder:raknaAlder(m.d), dagar:dagarTill(m.d)
+  };
+}); }
+
+/* -----------------------------------------------------------------
+   FRÅGETOLKEN
+----------------------------------------------------------------- */
+const stoppord=new Set(('alla alltihop som är vara vilka vilken vem hur många mycket medlemmar medlem '+
+ 'personer person folk år åring åringar gamla gammal och eller i på den det de dom har hade fyller fyllt '+
+ 'född födda födelsedag födelsedagar ålder åldern åldrar visa lista listan sök söka finns vi vårt våra '+
+ 'mellan över under äldre yngre än mer mindre minst högst max min exakt precis ungefär cirka ca kring runt '+
+ 'heter namn namnet med en ett av till från nästa denna detta här månad månaden månader talet snitt '+
+ 'medelålder genomsnitt genomsnittlig antal antalet totalt ut få fram kan jag vill skulle om för att '+
+ 'the vad vilka? är? hos oss församlingen kyrkan').split(' '));
+
+function tolka(text){
+  const q=text.toLowerCase()
+    .replace(/[?!.,;:]/g,' ')
+    .replace(/\s+/g,' ').trim();
+  if(!q) return null;
+
+  /* OBS: JavaScripts \b räknar inte å, ä och ö som bokstäver, så \böver
+     matchar aldrig. Därför byggs ordgränserna av mellanslag i stället.
+     Texten är paddad med mellanslag i början och slutet. */
+  const B='(?:^|\\s)', E='(?=\\s|$)';
+  const re=(kropp,flaggor)=>new RegExp(B+kropp+E,flaggor);
+
+  const r={ min:null, max:null, manad:null, arFran:null, arTill:null, namn:null,
+            topp:null, riktning:null, typ:'lista', delar:[] };
+  let kvar=' '+q+' ';
+  const ta=rx=>{const m=kvar.match(rx); if(m){kvar=kvar.replace(m[0],' ');return m;} return null;};
+
+  // --- Intention ---
+  if(re('hur (?:många|manga)').test(' '+q+' ')||re('antal(?:et)?').test(' '+q+' ')) r.typ='antal';
+  if(/medelålder|medelalder|snittålder|snitt|genomsnitt/.test(q)) r.typ='medel';
+
+  // --- Superlativ ---
+  let m;
+  if((m=ta(re('(?:de\\s+)?(\\d+)?\\s*(?:äldsta|äldst|aldst)')))){
+    r.riktning='ner'; r.topp=m[1]?+m[1]:1;
+    r.delar.push(r.topp===1?'den äldsta':'de '+r.topp+' äldsta');
+  } else if((m=ta(re('(?:de\\s+)?(\\d+)?\\s*(?:yngsta|yngst)')))){
+    r.riktning='upp'; r.topp=m[1]?+m[1]:1;
+    r.delar.push(r.topp===1?'den yngsta':'de '+r.topp+' yngsta');
+  }
+
+  // --- Åldersintervall ---
+  if((m=ta(re('mellan (\\d{1,3}) (?:och|till|-|–) (\\d{1,3})(?:\\s*år)?')))){
+    r.min=Math.min(+m[1],+m[2]); r.max=Math.max(+m[1],+m[2]);
+    r.delar.push('mellan '+r.min+' och '+r.max+' år');
+  } else if((m=ta(re('(\\d{1,3})\\s*(?:-|–|till)\\s*(\\d{1,3})(?:\\s*(?:år|åringar))?')))
+            && +m[1]<120 && +m[2]<130){
+    r.min=Math.min(+m[1],+m[2]); r.max=Math.max(+m[1],+m[2]);
+    r.delar.push('mellan '+r.min+' och '+r.max+' år');
+  } else if((m=ta(re('(?:över|äldre än|aldre an|mer än|fler än)\\s*(\\d{1,3})(?:\\s*år)?')))){
+    r.min=+m[1]+1; r.delar.push('äldre än '+m[1]+' år');
+  } else if((m=ta(re('(\\d{1,3})\\s*\\+')))){
+    r.min=+m[1]; r.delar.push(m[1]+' år och uppåt');
+  } else if((m=ta(re('(?:under|yngre än|yngre an|mindre än)\\s*(\\d{1,3})(?:\\s*år)?')))){
+    r.max=+m[1]-1; r.delar.push('yngre än '+m[1]+' år');
+  } else if((m=ta(re('(?:minst|från)\\s*(\\d{1,3})(?:\\s*år)?')))){
+    r.min=+m[1]; r.delar.push('minst '+m[1]+' år');
+  } else if((m=ta(re('(?:högst|max|maximalt|upp till)\\s*(\\d{1,3})(?:\\s*år)?')))){
+    r.max=+m[1]; r.delar.push('högst '+m[1]+' år');
+  } else if((m=ta(re('(?:exakt\\s+|precis\\s+)?(\\d{1,3})\\s*(?:år|åringar|årig|åriga)')))){
+    r.min=r.max=+m[1]; r.delar.push(m[1]+' år');
+  }
+
+  // --- Årtionde: "70-talet", "på 80-talet" ---
+  if((m=ta(re('(?:19|20)?(\\d0)[\\s-]*talet')))){
+    const d=+m[1], sekel = d>=30 ? 1900 : 2000;   // 30-talet=1930, 10-talet=2010
+    r.arFran=sekel+d; r.arTill=sekel+d+9;
+    r.delar.push('födda på '+(sekel+d)+'-talet');
+  }
+
+  // --- Födelseår ---
+  if((m=ta(re('(?:född\\s+|födda\\s+|årgång\\s+)?((?:18|19|20)\\d{2})')))){
+    r.arFran=r.arTill=+m[1]; r.delar.push('födda '+m[1]);
+  }
+
+  // --- Månad ---
+  for(let i=0;i<12;i++){
+    const rx=re('(?:'+manader[i]+'|'+manKort[i]+')');
+    if(rx.test(kvar)){ kvar=kvar.replace(rx,' '); r.manad=i;
+      r.delar.push('födda i '+manader[i]); break; }
+  }
+  if(r.manad===null && /denna månad|den här månaden|i månaden|denna manad/.test(q)){
+    r.manad=idag.getMonth(); r.delar.push('födda i '+manader[r.manad]);
+  }
+
+  // --- Namn: det som blir över och faktiskt matchar någon ---
+  const rester=kvar.split(/\s+/).filter(o=>o.length>2&&!stoppord.has(o)&&!/^\d+$/.test(o));
+  for(const ord of rester){
+    if(bas.some(p=>p.sok.indexOf(ord)!==-1)){
+      r.namn=ord; r.delar.push('med "'+ord+'" i namnet'); break;
+    }
+  }
+
+  const nagot = r.min!==null||r.max!==null||r.manad!==null||r.arFran!==null||r.namn||r.riktning;
+  if(!nagot && r.typ==='lista') return null;   // "hur många" och "medelålder" duger utan filter
+  return r;
+}
+
+function kor(r){
+  let lista=bas.filter(p=>{
+    if(r.min!==null && p.alder<r.min) return false;
+    if(r.max!==null && p.alder>r.max) return false;
+    if(r.manad!==null && p.manad!==r.manad) return false;
+    if(r.arFran!==null && (p.ar<r.arFran||p.ar>r.arTill)) return false;
+    if(r.namn && p.sok.indexOf(r.namn)===-1) return false;
+    return true;
+  });
+  if(r.riktning){
+    lista=lista.slice().sort((a,b)=> r.riktning==='ner' ? b.alder-a.alder : a.alder-b.alder);
+    lista=lista.slice(0,r.topp);
+  }
+  return lista;
+}
+
+/* -----------------------------------------------------------------
+   UTSKRIFT AV SVAR
+----------------------------------------------------------------- */
+const el=id=>document.getElementById(id);
+let aktuell=[], sortering={falt:'namn',fallande:false};
+
+function beskriv(r){
+  return r.delar.length ? r.delar.join(', ') : 'alla medlemmar';
+}
+
+function svaraMening(r,lista){
+  const n=lista.length;
+  const vad=beskriv(r);
+  if(r.typ==='medel'){
+    if(!n) return 'Ingen medlem matchar <b>'+vad+'</b>.';
+    const snitt=Math.round(lista.reduce((s,p)=>s+p.alder,0)/n);
+    return 'Medelåldern för <b>'+vad+'</b> är <b>'+snitt+' år</b>.';
+  }
+  if(r.riktning && r.topp===1 && n===1){
+    const p=lista[0];
+    return (r.riktning==='ner'?'Äldst':'Yngst')+' är <b>'+p.namn+'</b>, '+p.alder+
+           ' år, född '+datumText(p.datum)+' '+p.ar+'.';
+  }
+  if(!n) return 'Ingen medlem matchar <b>'+vad+'</b>.';
+  const ord=n===1?'medlem':'medlemmar';
+  return '<b>'+n+'</b> '+ord+' '+(r.delar.length?'— '+vad:'totalt')+'.';
+}
+
+function rita(){
+  if(!aktuell.length){ el('results').style.display='none'; el('verktyg').style.display='none'; return; }
+  el('results').style.display='';
+  el('verktyg').style.display='flex';
+
+  const n=sortering.fallande?-1:1;
+  const jmf={
+    namn:(a,b)=>a.sortNamn.localeCompare(b.sortNamn,'sv'),
+    alder:(a,b)=>a.alder-b.alder||a.sortNamn.localeCompare(b.sortNamn,'sv'),
+    datum:(a,b)=>a.dagINamn-b.dagINamn||a.sortNamn.localeCompare(b.sortNamn,'sv'),
+    nasta:(a,b)=>a.dagar-b.dagar||a.sortNamn.localeCompare(b.sortNamn,'sv')
+  }[sortering.falt];
+  const lista=aktuell.slice().sort((a,b)=>n*jmf(a,b));
+
+  document.querySelectorAll('thead th').forEach(th=>{
+    const aktiv=th.dataset.sort===sortering.falt;
+    th.classList.toggle('sorted',aktiv);
+    if(aktiv) th.querySelector('.pil').textContent=sortering.fallande?'▲':'▼';
+  });
+
+  el('tbody').innerHTML=lista.map(p=>
+    '<tr'+(p.dagar===0?' class="idag"':'')+'>'+
+      '<td class="namn">'+p.namn+(p.dagar===0?'<span class="flagga">fyller i dag</span>':'')+'</td>'+
+      '<td class="alder">'+p.alder+' år</td>'+
+      '<td class="datum">'+datumText(p.datum)+' '+p.ar+'</td>'+
+      '<td class="nasta">'+nastaText(p.dagar)+(p.dagar>0?' — fyller '+(p.alder+1):'')+'</td>'+
+    '</tr>').join('');
+}
+
+const exempelFragor=[
+  'vilka är mellan 50 och 60 år?',
+  'hur många är över 80?',
+  'vem är äldst?',
+  'de 5 yngsta',
+  'vilka fyller år i oktober?',
+  'alla som heter Andersson',
+  'födda på 70-talet',
+  'medelålder'
+];
+
+function fraga(text,skrivIRutan){
+  if(skrivIRutan) el('fraga').value=text;
+  const r=tolka(text);
+  const svar=el('svar');
+
+  if(!r){
+    aktuell=[]; rita();
+    svar.classList.add('miss');
+    el('mening').innerHTML = text.trim()
+      ? 'Jag förstod inte <b>"'+text.trim()+'"</b>.'
+      : 'Skriv en fråga om medlemmarnas ålder, namn eller födelsedag.';
+    el('detalj').textContent='Prova något i stil med exemplen ovan — ålder, namn, månad och födelseår går att kombinera.';
+    return;
+  }
+
+  svar.classList.remove('miss');
+  aktuell=kor(r);
+  el('mening').innerHTML=svaraMening(r,aktuell);
+
+  const extra=[];
+  if(aktuell.length>1){
+    extra.push('medelålder '+Math.round(aktuell.reduce((s,p)=>s+p.alder,0)/aktuell.length)+' år');
+    const y=aktuell.reduce((a,p)=>p.alder<a.alder?p:a), g=aktuell.reduce((a,p)=>p.alder>a.alder?p:a);
+    extra.push('yngst '+y.namn+' ('+y.alder+')');
+    extra.push('äldst '+g.namn+' ('+g.alder+')');
+  }
+  el('detalj').textContent=extra.join('  ·  ');
+
+  // Visa den mest relevanta sorteringen först
+  if(r.riktning) sortering={falt:'alder',fallande:r.riktning==='ner'};
+  else if(r.manad!==null) sortering={falt:'datum',fallande:false};
+  else sortering={falt:'namn',fallande:false};
+  rita();
+}
+
+/* -----------------------------------------------------------------
+   UPPLÅSNING
+   Datan dekrypteras i browsern. Den dekrypterade listan sparas i
+   sessionStorage så att man slipper skriva lösenfrasen på nytt vid
+   varje sidbyte — den försvinner när fliken stängs.
+----------------------------------------------------------------- */
+async function lasUpp(losen){
+  const knapp=el('lasKnapp'), fel=el('lasFel');
+  fel.textContent='';
+  if(KRYPTERAD.indexOf('__KRYPTERAD')!==-1){
+    fel.textContent='Filen innehåller ännu ingen krypterad lista. Kör kryptera-medlemmar.html och klistra in resultatet.';
+    return;
+  }
+  if(!losen){ fel.textContent='Skriv lösenfrasen.'; return; }
+  knapp.disabled=true; knapp.textContent='Låser upp…';
+  await new Promise(r=>setTimeout(r,30));
+  try{
+    medlemmar=await dekryptera(KRYPTERAD,losen);
+    try{ sessionStorage.setItem('hmk_medlemmar',JSON.stringify(medlemmar)); }catch(e){}
+    starta();
+  }catch(err){
+    fel.textContent = (err&&err.name==='OperationError')
+      ? 'Fel lösenfras.'
+      : 'Kunde inte låsa upp: '+(err.message||err.name);
+    knapp.disabled=false; knapp.textContent='Lås upp';
+    el('lasOrd').value=''; el('lasOrd').focus();
+  }
+}
+
+el('lasKnapp').addEventListener('click',()=>lasUpp(el('lasOrd').value));
+el('lasOrd').addEventListener('keydown',e=>{ if(e.key==='Enter') lasUpp(el('lasOrd').value); });
+
+// Redan upplåst i den här fliken?
+try{
+  const sparad=sessionStorage.getItem('hmk_medlemmar');
+  if(sparad){ medlemmar=JSON.parse(sparad); starta(); }
+  else el('lasOrd').focus();
+}catch(e){ el('lasOrd').focus(); }
+
+function starta(){
+  byggBas();
+  document.getElementById('las').style.display='none';
+  bygg();
+  el('lede').textContent='Skriv din fråga med egna ord. '+bas.length+
+    ' medlemmar i registret. Ålder, namn, månad och födelseår går att kombinera fritt.';
+  fraga('',false);
+  el('fraga').focus();
+}
+
+/* ---- Koppla ihop ---- */
+let byggd=false;
+function bygg(){
+if(byggd) return; byggd=true;
+const ex=el('exempel');
+exempelFragor.forEach(t=>{
+  const b=document.createElement('button');
+  b.className='ex'; b.textContent=t;
+  b.addEventListener('click',()=>fraga(t,true));
+  ex.appendChild(b);
+});
+
+let timer;
+el('fraga').addEventListener('input',e=>{
+  clearTimeout(timer);
+  const v=e.target.value;
+  timer=setTimeout(()=>fraga(v,false),160);
+});
+el('btnRensa').addEventListener('click',()=>{
+  el('fraga').value=''; el('fraga').focus(); fraga('',false);
+});
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const f=th.dataset.sort;
+    sortering = sortering.falt===f?{falt:f,fallande:!sortering.fallande}:{falt:f,fallande:false};
+    rita();
+  });
+});
+el('btnSkriv').addEventListener('click',()=>window.print());
+el('btnKopiera').addEventListener('click',async()=>{
+  const text='Namn\tÅlder\tFödelsedag\n'+aktuell.map(p=>
+    [p.namn,p.alder+' år',datumText(p.datum)+' '+p.ar].join('\t')).join('\n');
+  const k=el('btnKopiera'), original=k.innerHTML;
+  try{ await navigator.clipboard.writeText(text); }
+  catch(err){
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+  }
+  k.classList.add('klar'); k.innerHTML='Kopierat — '+aktuell.length+' rader';
+  setTimeout(()=>{k.classList.remove('klar');k.innerHTML=original;},1900);
+});
+}  /* slut på bygg() */
+</script>
+</body>
+</html>
