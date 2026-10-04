@@ -6,6 +6,35 @@
 <title>HMK Personalportal</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  #login-screen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #718B94;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #login-screen img { height: 56px; filter: brightness(0) invert(1); margin-bottom: 10px; }
+  #login-screen .logo-sub { color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
+  #login-screen .gold-line { width: 50px; height: 2px; background: #C1A051; border-radius: 2px; margin: 16px auto 28px; }
+  #login-screen h2 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; font-weight: 400; margin-bottom: 24px; }
+  #login-screen input {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px; padding: 12px 20px; color: white; font-size: 15px;
+    font-family: 'DM Sans', sans-serif; width: 260px; outline: none; text-align: center;
+    letter-spacing: 0.1em; transition: border 0.2s;
+  }
+  #login-screen input::placeholder { color: rgba(255,255,255,0.45); letter-spacing: 0.04em; }
+  #login-screen input:focus { border-color: #C1A051; }
+  #login-screen button {
+    margin-top: 14px; width: 260px; padding: 12px;
+    background: #C1A051; border: none; border-radius: 10px;
+    color: white; font-size: 14px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    letter-spacing: 0.06em; transition: background 0.2s;
+  }
+  #login-screen button:hover { background: #d4b870; }
+  /* Saknades tidigare – felmeddelandet vid fel lösenord syntes inte */
+  #login-screen .error { color: #f5d9d9; font-size: 12px; margin-top: 14px; min-height: 16px; letter-spacing: 0.03em; }
   :root {
     --teal: #718B94;
     --teal-dark: #4a6670;
@@ -55,9 +84,17 @@
   .wt { font-size: 38px; font-weight: 700; color: var(--dark); line-height: 1; }
   .wd { font-size: 12px; color: var(--olive); margin-top: 2px; }
   .wl { font-size: 9px; color: var(--teal-light); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .ws { display: flex; justify-content: space-between; border-top: 1px solid #f0ede8; margin-top: 9px; padding-top: 9px; }
+  .ws { display: grid; grid-template-columns: repeat(4,1fr); gap: 11px 6px; border-top: 1px solid #f0ede8; margin-top: 9px; padding-top: 10px; }
   .wsi .lbl { font-size: 9px; color: var(--olive); text-transform: uppercase; letter-spacing: 0.05em; }
   .wsi .val { font-size: 12px; color: var(--dark); font-weight: 600; margin-top: 2px; }
+  /* Rutor som bara finns i den egna väderstationens data – dolda tills
+     stationen svarar, så att kortet aldrig visar tomma streck. */
+  .wsi.station { display: none; }
+  .wsrc { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f0ede8; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-light); }
+  .wsrc .kalla { display: flex; align-items: center; gap: 6px; }
+  .wsrc .prick { width: 6px; height: 6px; border-radius: 50%; background: #c9cdc4; flex-shrink: 0; transition: background 0.3s, box-shadow 0.3s; }
+  .wsrc.live .prick { background: #7ba05b; box-shadow: 0 0 0 3px rgba(123,160,91,0.18); }
+  .wsrc.live .kalla { color: var(--gold); font-weight: 600; }
   /* News */
   .ni { padding: 6px 0; border-bottom: 1px solid #f5f3ef; }
   .ni:last-child { border-bottom: none; }
@@ -70,8 +107,9 @@
   /* Events */
   .ei { display: flex; gap: 11px; align-items: center; padding: 6px 0; border-bottom: 1px solid #f5f3ef; }
   .ei:last-child { border-bottom: none; }
-  .ed { background: linear-gradient(135deg,var(--teal-dark),var(--teal)); color: var(--white); border-radius: 8px; width: 36px; height: 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ed .dy { font-size: 13px; font-weight: 700; line-height: 1; }
+  .ed { background: linear-gradient(135deg,var(--teal-dark),var(--teal)); color: var(--white); border-radius: 8px; width: 40px; height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
+  .ed .vd { font-size: 7.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold-light); }
+  .ed .dy { font-size: 15px; font-weight: 700; line-height: 1.15; }
   .ed .mn { font-size: 7px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
   .et { font-size: 11px; color: var(--dark); font-weight: 600; }
   .etm { font-size: 10px; color: var(--olive); margin-top: 1px; }
@@ -100,6 +138,17 @@
 </head>
 <body>
 
+<div id="login-screen">
+  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <span class="logo-sub">Hönö Missionskyrka</span>
+  <div class="gold-line"></div>
+  <h2>Personalportal</h2>
+  <input type="password" id="pwInput" placeholder="Lösenord" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()">Logga in</button>
+  <div class="error" id="pwError"></div>
+  <a href="https://honomissionskyrka.github.io/hmkintranet/start.html" style="margin-top:20px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;letter-spacing:0.06em;">← Tillbaka till startsidan</a>
+</div>
+
 <div class="header">
   <img class="header-logo" src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
   <div class="date-pill" id="dateChip">Laddar...</div>
@@ -115,27 +164,68 @@
     <div class="card">
       <div class="ch"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13,2 13,9 20,9"/></svg><span>Snabblänkar</span></div>
       <div class="cb">
-        <div class="ql">
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Personal­handbok</span></a>
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Mina dokument</span></a>
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Semester­ansökan</span></a>
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>Sjuk­anmälan</span></a>
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Policyer</span></a>
-          <a class="ql-btn" href="#"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Kontakter</span></a>
+        <div class="ql" style="grid-template-columns:repeat(8,1fr)">
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Personal­handbok</span>
+          </a>
+          <!-- Biblioteket "Mina Dokument" på HMK-Personal. Varje anställd har en egen
+               mapp med unika behörigheter – ingen kommer åt någon annans mapp. -->
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Mina%20Dokument/Forms/AllItems.aspx" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Mina dokument</span>
+          </a>
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personalrad/Personarkiv/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonalrad%2FPersonarkiv%2FAktiva&viewid=c748138d%2Dce4b%2D4ef2%2D90eb%2D4fe4b7f9000e" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Mina personal­handlingar</span>
+          </a>
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonal%2FPersonalhandbok%2FSemester&viewid=2f947f30%2D082c%2D48d1%2Db60a%2D076986569876" target="_blank">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Semester­ansökan</span>
+          </a>
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonal%2FPersonalhandbok%2FSjukfr%C3%A5nvaro&viewid=2f947f30%2D082c%2D48d1%2Db60a%2D076986569876" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+            <span>Sjuk­anmälan</span>
+          </a>
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Policyer</span>
+          </a>
+          <a class="ql-btn" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Kontakter</span>
+          </a>
+          <!-- OBS: pekar på rot-sajtens dokumentbibliotek, inte HMK-Personal.
+               Kontrollera att Anders, Magdalena och Joel har åtkomst dit. -->
+          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/Delade%20dokument/Datafiler/fodelsedagar.html" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Födelse­dagar</span>
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- Bibelord -->
+    <!-- Bibliotekskort -->
     <div class="card">
-      <div class="ch gold"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagens bibelord</span></div>
-      <div class="cb" style="display:flex;gap:14px;align-items:flex-start;">
-        <div style="flex:1;"><div class="bv" id="bibleVerse">Hämtar dagens bibelord...</div><div class="br" id="bibleRef"></div></div>
-        <div class="bi"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Mina bibliotek</span></div>
+      <div class="cb" style="padding:8px;">
+        <div class="lib-grid" style="grid-template-columns:repeat(3,1fr);">
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Uthyrning/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
+          <!-- KONTROLLERA: biblioteket heter "Skerhet" i URL:en (utan ä).
+               Öppna biblioteket i SharePoint och jämför med adressfältet. -->
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Skerhet/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
+          <a class="lib-card" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
+          <!-- ÄNDRAD: pekade tidigare på /_layouts/15/viewlsts.aspx, vilket visade hela
+               sajtens innehåll för personalen. Pekar nu på det nya biblioteket Ovrigt
+               (ASCII-URL, visningsnamn "Övrigt"). -->
+          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Ovrigt/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+        </div>
       </div>
     </div>
 
-    <!-- Rad 2: Väder + Händelser + GP -->
+    <!-- Rad 2: Väder + Händelser + Dagen -->
     <div class="row2">
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Väder — Hönö</span></div>
@@ -153,42 +243,59 @@
               <div class="wsi"><div class="lbl">Känns</div><div class="val" id="wFeel">–</div></div>
               <div class="wsi"><div class="lbl">Vind</div><div class="val" id="wWind">–</div></div>
               <div class="wsi"><div class="lbl">Fukt</div><div class="val" id="wHum">–</div></div>
+              <div class="wsi"><div class="lbl">UV</div><div class="val" id="wUV">–</div></div>
+              <div class="wsi station"><div class="lbl">Byvind</div><div class="val" id="wGust">–</div></div>
+              <div class="wsi station"><div class="lbl">Riktning</div><div class="val" id="wDir">–</div></div>
+              <div class="wsi station"><div class="lbl">Regn</div><div class="val" id="wRain">–</div></div>
+              <div class="wsi station"><div class="lbl">Tryck</div><div class="val" id="wPress">–</div></div>
+            </div>
+            <div class="wsrc" id="wSource">
+              <div class="kalla"><span class="prick"></span><span id="wSourceTxt">Open-Meteo</span></div>
+              <span id="wUpdated"></span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händelser</span></div>
+        <div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Händer i församlingen</span></div>
         <div class="cb" id="eventsBox"><p class="loading">Hämtar händelser...</p></div>
       </div>
 
-      <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>GP</span></div>
-        <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
-      </div>
-    </div>
-
-    <!-- Rad 3: GP + SVT + Dagen -->
-    <div class="row3">
-      <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>GP</span></div>
-        <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
-      </div>
-      <div class="card">
-        <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>SVT Nyheter</span></div>
-        <div class="cb" id="svtNews"><p class="loading">Hämtar nyheter...</p></div>
-      </div>
       <div class="card">
         <div class="ch"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagen</span></div>
         <div class="cb" id="dagenNews"><p class="loading">Hämtar nyheter...</p></div>
       </div>
     </div>
 
+    <!-- Rad 3: DN + SVT + Sändaren -->
+    <div class="row3">
+      <div class="card">
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>Dagens Nyheter</span></div>
+        <div class="cb" id="gpNews"><p class="loading">Hämtar nyheter...</p></div>
+      </div>
+      <div class="card">
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>SVT Väst</span></div>
+        <div class="cb" id="svtNews"><p class="loading">Hämtar nyheter...</p></div>
+      </div>
+      <div class="card">
+        <div class="ch"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Sändaren</span></div>
+        <div class="cb" id="sandarenNews"><p class="loading">Hämtar nyheter...</p></div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- RIGHT -->
+  <!-- HÖGERKOLUMN -->
   <div class="right-col">
+    <div class="card">
+      <div class="ch gold"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Dagens bibelord</span></div>
+      <div class="cb" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex:1;"><div class="bv" id="bibleVerse">Hämtar dagens bibelord...</div><div class="br" id="bibleRef"></div></div>
+        <div class="bi"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      </div>
+    </div>
+
     <div class="lp">
       <div class="lp-title">Hur gör jag för att...</div>
       <a class="lp-item" href="https://www.skatteverket.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="lp-txt">Deklarera &amp; skattetabell</div><div class="lp-sub">Skatteverket</div></div></a>
@@ -199,27 +306,82 @@
       <a class="lp-item" href="https://www.equmeniakyrkan.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div><div class="lp-txt">Riksorganisationen</div><div class="lp-sub">Equmeniakyrkan</div></div></a>
       <a class="lp-item" href="https://www.hitta.se" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Hitta personer &amp; företag</div><div class="lp-sub">Hitta.se</div></div></a>
       <a class="lp-item" href="https://www.ica.se/artikel/nyttig-veckomeny/" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div><div><div class="lp-txt">Veckans meny</div><div class="lp-sub">ICA</div></div></a>
+      <!-- Direkt till bildfilen, så att man kan klicka upp kameran i storbild. -->
       <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
+      <!-- Sökverktyget ligger i medlemssok.html. Medlemsdatan finns på två
+           ställen: där och i bdMembers längre ned – byt på båda vid uppdatering. -->
+      <a class="lp-item" href="https://honomissionskyrka.github.io/hmkintranet/medlemssok.html" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Medlemssök</div><div class="lp-sub">Sök på ålder, namn eller månad</div></div></a>
       <div class="lp-more">→ Visa fler länkar</div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
-      <a class="lib-card" href="#"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+    <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(40,38,38,0.10);">
+      <div style="background:#718B94;padding:9px 15px;display:flex;align-items:center;gap:8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span style="color:white;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">Födelsedagar</span>
+      </div>
+      <div id="bdList" style="padding:4px 0;"><p style="padding:10px 15px;font-size:11px;color:#AAACA0;font-style:italic;">Hämtar...</p></div>
+    </div>
+    <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(40,38,38,0.10);">
+      <div style="background:#718B94;padding:9px 15px;display:flex;align-items:center;gap:8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span style="color:white;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">Helgdagar 2026</span>
+      </div>
+      <div id="nextBox" style="background:#f5f0e8;border-bottom:0.5px solid #e8e4d8;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;"></div>
+      <div id="hlist"></div>
     </div>
   </div>
 </div>
 
 <script>
+const holidays=[
+  {name:'Nyårsdagen',date:'2026-01-01'},
+  {name:'Trettondagen',date:'2026-01-06'},
+  {name:'Långfredagen',date:'2026-04-03'},
+  {name:'Påskdagen',date:'2026-04-05'},
+  {name:'Annandag påsk',date:'2026-04-06'},
+  {name:'Första maj',date:'2026-05-01'},
+  {name:'Kristi himmelfärdsdag',date:'2026-05-14'},
+  {name:'Pingstdagen',date:'2026-05-24'},
+  {name:'Sveriges nationaldag',date:'2026-06-06'},
+  {name:'Midsommardagen',date:'2026-06-20'},
+  {name:'Alla helgons dag',date:'2026-10-31'},
+  {name:'Juldagen',date:'2026-12-25'},
+  {name:'Annandag jul',date:'2026-12-26'},
+];
+const wdays=['sön','mån','tis','ons','tor','fre','lör'];
+const mons=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const today=new Date();today.setHours(0,0,0,0);
+function diff(ds){const d=new Date(ds);d.setHours(0,0,0,0);return Math.round((d-today)/86400000);}
+function fmt(ds){const d=new Date(ds);return wdays[d.getDay()]+' '+d.getDate()+' '+mons[d.getMonth()];}
+const next=holidays.find(h=>diff(h.date)>=0);
+if(next){
+  const d=diff(next.date);
+  document.getElementById('nextBox').innerHTML=`
+    <div><div style="font-size:10px;color:#C1A051;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Nästa helgdag</div>
+    <div style="font-size:14px;font-weight:500;color:#282626;margin-top:2px;">${next.name}</div>
+    <div style="font-size:11px;color:#718B94;margin-top:1px;">${fmt(next.date)}</div></div>
+    <div style="background:#C1A051;color:white;border-radius:8px;padding:6px 10px;text-align:center;flex-shrink:0;">
+      <div style="font-size:20px;font-weight:600;line-height:1;">${d===0?'🎉':d}</div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;opacity:0.9;">${d===0?'idag':d===1?'dag kvar':'dagar kvar'}</div>
+    </div>`;
+}
+document.getElementById('hlist').innerHTML=holidays.map(h=>{
+  const d=diff(h.date);
+  const past=d<0;const isToday=d===0;const isNext=h===next;
+  const bg=isToday?'#f5f0e8':isNext?'#f8f6f1':'';
+  const op=past?'opacity:0.35;':'';
+  const daysLbl=d<0?'':d===0?'idag':d+' dagar';
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 15px;border-bottom:0.5px solid #f0ede8;${op}background:${bg};">
+    <div style="font-size:10px;color:#AAACA0;width:75px;flex-shrink:0;">${fmt(h.date)}</div>
+    <div style="font-size:11px;color:#282626;flex:1;">${h.name}</div>
+    <div style="font-size:10px;color:#C1A051;font-weight:600;min-width:48px;text-align:right;">${daysLbl}</div>
+  </div>`;
+}).join('');
 const d=new Date();
 const days=['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
 const months=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
 document.getElementById('dateChip').textContent=days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&wind_speed_unit=ms&timezone=Europe%2FStockholm')
+fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,uv_index&wind_speed_unit=ms&timezone=Europe%2FStockholm')
   .then(r=>r.json()).then(data=>{
     const c=data.current,code=c.weather_code;
     let desc='Klart';
@@ -234,50 +396,285 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=57.71&longitude=11.60&cur
     document.getElementById('wFeel').textContent=Math.round(c.apparent_temperature)+'°';
     document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' m/s';
     document.getElementById('wHum').textContent=Math.round(c.relative_humidity_2m)+'%';
+    document.getElementById('wUV').textContent=c.uv_index?.toFixed(1)??'–';
   }).catch(()=>{document.getElementById('wDesc').textContent='Kunde inte hämta';});
-fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://www.bible.com/sv/verse-of-the-day'))
-  .then(r=>r.json()).then(data=>{
-    const html=data.contents;
-    const dm=html.match(/meta-og:description[^"]*"([^"]+)"/);
-    const tm=html.match(/<title>Dagens vers - ([^<]+)<\/title>/);
-    if(dm){
-      const full=dm[1];
-      const rm=full.match(/^([^\s].*?)\s+(Jag|Han|Hon|Det|De|Du|Ni|Vi|Ty|Var|Men|Och|För|Om|Se|Då|Nu|Så|På|I |Av|Att|En|Ett|All|Gud|Herr|Jesus|Petrus|Paulus)/);
-      let ref='',verse=full;
-      if(rm){ref=rm[1].trim();verse=full.substring(ref.length).trim();}
-      else if(tm){ref=tm[1];}
-      document.getElementById('bibleVerse').textContent='"'+verse+'"';
-      document.getElementById('bibleRef').textContent=ref||'';
-    }else{
-      document.getElementById('bibleVerse').textContent='"Jag vill ge dig insikt och lära dig den väg du skall gå."';
-      document.getElementById('bibleRef').textContent='Psaltaren 32:8';
-    }
-  }).catch(()=>{document.getElementById('bibleVerse').textContent='"Jag vill ge dig insikt och lära dig den väg du skall gå."';document.getElementById('bibleRef').textContent='Psaltaren 32:8';});
-const PROXY='https://api.allorigins.win/get?url=';
-function timeAgo(ds){const diff=(Date.now()-new Date(ds))/60000;if(diff<60)return Math.round(diff)+' min sedan';if(diff<1440)return Math.round(diff/60)+' tim sedan';return Math.round(diff/1440)+' dag(ar) sedan';}
-function parseRender(xml,elId,src,max){
-  try{
-    const doc=new DOMParser().parseFromString(xml,'text/xml');
-    const items=Array.from(doc.querySelectorAll('item')).slice(0,max);
-    if(!items.length)throw new Error();
-    document.getElementById(elId).innerHTML=items.map(i=>{
-      const t=i.querySelector('title')?.textContent||'';
-      const l=i.querySelector('link')?.textContent||'#';
-      const p=i.querySelector('pubDate')?.textContent||'';
-      return '<div class="ni"><div class="ns">'+src+'</div><div class="nt"><a href="'+l+'" target="_blank">'+t+'</a></div>'+(p?'<div class="ntm">'+timeAgo(p)+'</div>':'')+'</div>';
-    }).join('');
-  }catch(e){document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';}
+
+/* ---------------------------------------------------------------
+   EGEN VÄDERSTATION (Shelly WS-90)
+
+   Home Assistant skriver sina mätvärden till ett GitHub Gist var
+   tionde minut. Den här sidan LÄSER bara det gistet – den har ingen
+   kontakt med Home Assistant alls, och det finns ingen nyckel här.
+
+   Värdena läggs ovanpå Open-Meteo-datan. Svarar inte stationen står
+   kortet kvar med Open-Meteo, precis som förut.
+
+   ► FYLL I DIN GIST-URL NEDAN när du skapat gistet. Innan dess
+     hoppas den egna stationen över helt och inget går sönder.
+--------------------------------------------------------------- */
+const VADER_GIST='https://gist.githubusercontent.com/ANVANDARNAMN/GIST_ID/raw/hmk-vader.json';
+
+function kompass(grader){
+  const r=['N','NO','O','SO','S','SV','V','NV'];
+  return r[Math.round(grader/45)%8];
 }
-function fetchRSS(url,elId,src,max){fetch(PROXY+encodeURIComponent(url)).then(r=>r.json()).then(d=>parseRender(d.contents,elId,src,max)).catch(()=>{document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';});}
+
+async function laddaEgenVaderstation(){
+  if(VADER_GIST.indexOf('GIST_ID')!==-1){
+    console.info('Egen väderstation: ingen gist-URL ifylld än, hoppar över.');
+    return;
+  }
+  let d;
+  try{
+    const r=await fetch(VADER_GIST+'?t='+Date.now(),{signal:AbortSignal.timeout(8000)});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    d=await r.json();
+  }catch(err){
+    console.warn('Egen väderstation svarade inte:',err.name+' '+err.message);
+    return;
+  }
+  if(typeof d.temp!=='number'){
+    console.warn('Egen väderstation: ingen temperatur i datan.');
+    return;
+  }
+
+  // Är datan färsk? Äldre än en timme behandlas som otillförlitlig.
+  const stamp=d.uppdaterad?new Date(d.uppdaterad):null;
+  if(stamp&&!isNaN(stamp)&&(Date.now()-stamp)>3600000){
+    console.warn('Egen väderstation: datan är äldre än en timme, visar Open-Meteo.');
+    return;
+  }
+
+  const satt=(id,varde)=>{const el=document.getElementById(id);if(el&&varde!=null)el.textContent=varde;};
+  const visa=(id,varde)=>{
+    const el=document.getElementById(id);
+    if(el&&varde!=null){el.textContent=varde;el.closest('.wsi').style.display='block';}
+  };
+
+  satt('wTemp',Math.round(d.temp)+'°');
+  if(typeof d.kanns==='number') satt('wFeel',Math.round(d.kanns)+'°');
+  if(typeof d.vind==='number') satt('wWind',d.vind.toFixed(1)+' m/s');
+  if(typeof d.fukt==='number') satt('wHum',Math.round(d.fukt)+'%');
+  if(typeof d.uv==='number') satt('wUV',d.uv.toFixed(1));
+
+  if(typeof d.by==='number') visa('wGust',d.by.toFixed(1)+' m/s');
+  if(typeof d.riktning==='number') visa('wDir',kompass(d.riktning));
+  if(typeof d.regn==='number') visa('wRain',d.regn.toFixed(1)+' mm');
+  if(typeof d.tryck==='number') visa('wPress',Math.round(d.tryck)+' hPa');
+
+  const kalla=document.getElementById('wSource');
+  kalla.classList.add('live');
+  document.getElementById('wSourceTxt').textContent='Egen väderstation';
+  if(stamp&&!isNaN(stamp)){
+    document.getElementById('wUpdated').textContent=
+      stamp.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+  }
+}
+laddaEgenVaderstation();
+setInterval(laddaEgenVaderstation,600000);
+
+// Hämta dagens bibelord från dedikerat API
+async function loadVerse() {
+  try {
+    const res = await fetch('https://dagensvers-dakboard-49dccefcf2c0.herokuapp.com/verse');
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Okänt fel');
+    document.getElementById('bibleVerse').textContent = '"' + (data.verse || '') + '"';
+    document.getElementById('bibleRef').textContent = data.reference || '';
+  } catch(err) {
+    document.getElementById('bibleVerse').textContent = '"Jag vill ge dig insikt och lära dig den väg du skall gå."';
+    document.getElementById('bibleRef').textContent = 'Psaltaren 32:8';
+  }
+}
+loadVerse();
+setInterval(loadVerse, 3600000);
+
+/* ---------------------------------------------------------------
+   RSS-HÄMTNING MED PROXYKEDJA
+
+   GitHub Pages kan inte hämta RSS direkt från andra domäner – det
+   kräver en proxy. Tidigare användes en enda proxy, vilket innebar
+   att samtliga widgetar slocknade så fort den tjänsten gick ner
+   (corsproxy.io började kräva API-nyckel, allorigins svarade 500).
+
+   Nu provas flera proxyer i tur och ordning. Först den som svarar
+   korrekt används. Slutar en tjänst fungera hoppar koden vidare
+   till nästa av sig själv, utan att något behöver ändras här.
+
+   Som sista utväg för nyhetsflöden används rss2json, som själv
+   läser flödet och returnerar färdig JSON. Den klarar även stora
+   flöden som Sändarens, där hela artikeltexter ligger med.
+--------------------------------------------------------------- */
+// Proxyer för rå text (används av kalendern). Testade 2026-10-04:
+// r.jina.ai svarar, codetabs och allorigins gör det inte längre.
+// Varje anrop har en egen tidsgräns så att en död tjänst inte kan
+// låsa sidan – den hoppas över efter tio sekunder.
+const PROXIES=[
+  'https://r.jina.ai/',
+  'https://api.codetabs.com/v1/proxy?quest=',
+  'https://api.allorigins.win/raw?url='
+];
+const RSS2JSON='https://api.rss2json.com/v1/api.json?rss_url=';
+
+async function fetchViaProxy(url){
+  let lastErr;
+  for(const proxy of PROXIES){
+    try{
+      const res=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const text=await res.text();
+      if(!text||text.length<50) throw new Error('Tomt svar');
+      if(text.trim().charAt(0)==='{'&&text.indexOf('"error"')!==-1) throw new Error('Proxyfel: '+text.slice(0,120));
+      return text;
+    }catch(err){
+      lastErr=err;
+      console.warn('Proxy misslyckades:',proxy,err.name+' '+err.message);
+    }
+  }
+  throw lastErr||new Error('Alla proxyer misslyckades');
+}
+
+function timeAgo(ds){
+  // rss2json lämnar datum som "2026-10-04 18:30:00" – ersätt mellanslaget
+  // med T så att alla browsers tolkar det likadant.
+  const d=new Date(String(ds).trim().replace(' ','T'));
+  if(isNaN(d)) return '';
+  const diff=(Date.now()-d)/60000;
+  if(diff<0) return 'nyss';
+  if(diff<60) return Math.round(diff)+' min sedan';
+  if(diff<1440) return Math.round(diff/60)+' tim sedan';
+  return Math.round(diff/1440)+' dag(ar) sedan';
+}
+
+function renderItems(list,elId,src){
+  if(!list.length){document.getElementById(elId).innerHTML='<p class="ne">Inga nyheter just nu.</p>';return;}
+  document.getElementById(elId).innerHTML=list.map(i=>
+    '<div class="ni"><div class="ns">'+src+'</div><div class="nt"><a href="'+(i.link||'#')+'" target="_blank">'+i.title+'</a></div>'+
+    (i.pub?'<div class="ntm">'+timeAgo(i.pub)+'</div>':'')+'</div>'
+  ).join('');
+}
+
+function parseXML(xml,max){
+  const doc=new DOMParser().parseFromString(xml,'text/xml');
+  return Array.from(doc.querySelectorAll('item')).slice(0,max).map(i=>({
+    title:i.querySelector('title')?.textContent||'',
+    link:i.querySelector('link')?.textContent||'#',
+    pub:i.querySelector('pubDate')?.textContent||''
+  })).filter(i=>i.title);
+}
+
+async function fetchRSS(url,elId,src,max){
+  // Försök 1: rss2json. Den läser flödet på sin egen server och lämnar
+  // färdig JSON, så ingen CORS-proxy behövs. Klarar även Sändarens
+  // stora flöde som tidigare sprängde 1 MB-gränsen hos corsproxy.io.
+  try{
+    const res=await fetch(RSS2JSON+encodeURIComponent(url),{signal:AbortSignal.timeout(12000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items) throw new Error(data.message||'rss2json-fel');
+    const items=data.items.slice(0,max).map(i=>({title:i.title,link:i.link,pub:i.pubDate}));
+    if(items.length){renderItems(items,elId,src);return;}
+    throw new Error('Inga poster i flödet');
+  }catch(err){
+    console.warn('rss2json misslyckades för',src,err.name+' '+err.message);
+  }
+  // Försök 2: rå XML via proxykedjan, om rss2json ligger nere
+  try{
+    const items=parseXML(await fetchViaProxy(url),max);
+    if(!items.length) throw new Error('Inga poster i flödet');
+    renderItems(items,elId,src);
+  }catch(err){
+    console.warn('XML-hämtning misslyckades för',src,err.name+' '+err.message);
+    document.getElementById(elId).innerHTML='<p class="ne">Kunde inte hämta nyheter.</p>';
+  }
+}
+
 // Uppdatera webcam var 60:e sekund
 setInterval(()=>{const img=document.getElementById('webcamImg');if(img)img.src='https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg?t='+Date.now();},60000);
 
-// Hämta händelser från kyrkans kalender
+// Födelsedagar inbyggda direkt
+/* ---------------------------------------------------------------
+   FÖDELSEDAGAR — KRYPTERAD
+
+   Medlemslistan ligger AES-GCM-krypterad. Lösenordet i inloggnings-
+   rutan är inte längre en kontroll som jämför en sträng, utan den
+   nyckel som datan faktiskt låses upp med. Utan rätt lösenfras finns
+   ingen läsbar medlemsdata i den här filen.
+
+   Byt ut strängen nedan mot den som kryptera-medlemmar.html ger dig.
+   Samma sträng ska in i medlemssok.html.
+--------------------------------------------------------------- */
+const KRYPTERAD='__KRYPTERAD_DATA__';
+let bdMembers=[];
+
+async function harledNyckel(losen,salt){
+  const bas=await crypto.subtle.importKey('raw',new TextEncoder().encode(losen),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:300000,hash:'SHA-256'},
+    bas,{name:'AES-GCM',length:256},false,['decrypt']);
+}
+async function dekryptera(blob,losen){
+  const rad=Uint8Array.from(atob(blob),c=>c.charCodeAt(0));
+  const salt=rad.slice(0,16), iv=rad.slice(16,28), data=rad.slice(28);
+  const nyckel=await harledNyckel(losen,salt);
+  const klartext=await crypto.subtle.decrypt({name:'AES-GCM',iv},nyckel,data);
+  return JSON.parse(new TextDecoder().decode(klartext));
+}
+function ritaFodelsedagar(){ const members=bdMembers; {
+    const today=new Date();
+    const todayMD=(today.getMonth()+1).toString().padStart(2,'0')+'-'+today.getDate().toString().padStart(2,'0');
+    const todayYear=today.getFullYear();
+
+    // Beräkna dagar till nästa födelsedag
+    function parseLocalDate(datum){
+      const parts=datum.split('-');
+      return new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+    }
+    function daysUntil(datum){
+      const bd=parseLocalDate(datum);
+      const now=new Date(); now.setHours(0,0,0,0);
+      const thisYear=new Date(now.getFullYear(),bd.getMonth(),bd.getDate());
+      const nextYear=new Date(now.getFullYear()+1,bd.getMonth(),bd.getDate());
+      const diff=thisYear>=now?thisYear-now:nextYear-now;
+      return Math.round(diff/86400000);
+    }
+    function age(datum){
+      const bd=parseLocalDate(datum);
+      const now=new Date(); now.setHours(0,0,0,0);
+      const yr=now.getFullYear();
+      const bday=new Date(yr,bd.getMonth(),bd.getDate());
+      return bday<=now?yr-bd.getFullYear():yr-bd.getFullYear()-1;
+    }
+    function fmtDate(datum){
+      const d=parseLocalDate(datum);
+      const mons=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+      return d.getDate()+' '+mons[d.getMonth()];
+    }
+
+    // Sortera efter nästa födelsedag
+    const sorted=members.map(m=>({...m,days:daysUntil(m.d)})).sort((a,b)=>a.days-b.days);
+    const upcoming=sorted.slice(0,8);
+
+    const html=upcoming.map(m=>{
+      const isToday=m.days===0;
+      const nextAge=age(m.d)+(isToday?0:1);
+      const bg=isToday?'#f5f0e8':'';
+      const daysTxt=isToday?'🎂 Idag!':m.days===1?'imorgon':m.days+' dagar';
+      const dayCol=isToday?'#C1A051':'#718B94';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 15px;border-bottom:0.5px solid #f0ede8;background:${bg};">
+        <div>
+          <div style="font-size:12px;font-weight:500;color:#282626;">${m.f} ${m.e}</div>
+          <div style="font-size:10px;color:#AAACA0;">${fmtDate(m.d)} — fyller ${nextAge} år</div>
+        </div>
+        <div style="font-size:10px;font-weight:600;color:${dayCol};text-align:right;min-width:52px;">${daysTxt}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('bdList').innerHTML=html||'<p style="padding:10px 15px;font-size:11px;color:#AAACA0;">Inga kommande födelsedagar.</p>';
+  }}
+
 const icalUrl='https://www.honomissionskyrka.se/?post_type=tribe_events&ical=1&eventDisplay=list';
-fetch(PROXY+encodeURIComponent(icalUrl))
-  .then(r=>r.json())
-  .then(data=>{
-    const ical=data.contents;
+(async function(){
+  try{
+    const ical=await fetchViaProxy(icalUrl);
     const events=[];
     const now=new Date();
     const veventRegex=/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
@@ -287,14 +684,17 @@ fetch(PROXY+encodeURIComponent(icalUrl))
       const summary=(block.match(/SUMMARY:(.*)/)||[])[1]?.trim()||'';
       const dtstart=(block.match(/DTSTART[^:]*:(.*)/)||[])[1]?.trim()||'';
       if(!summary||!dtstart)continue;
-      let date;
+      let date,timeStr='';
       if(dtstart.includes('T')){
-        const d=dtstart.replace(/[^0-9T]/g,'');
-        date=new Date(d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T'+d.slice(9,11)+':'+d.slice(11,13)+':00');
+        const ds=dtstart.replace(/Z$/,'');
+        const yr=ds.slice(0,4),mo=ds.slice(4,6),dy=ds.slice(6,8);
+        const hr=ds.slice(9,11),mn=ds.slice(11,13);
+        date=new Date(yr+'-'+mo+'-'+dy+'T'+hr+':'+mn+':00');
+        timeStr='kl '+hr+':'+mn;
       } else {
         date=new Date(dtstart.slice(0,4)+'-'+dtstart.slice(4,6)+'-'+dtstart.slice(6,8));
       }
-      if(date>=now) events.push({summary,date});
+      if(date>=now) events.push({summary,date,timeStr});
     }
     events.sort((a,b)=>a.date-b.date);
     const top=events.slice(0,5);
@@ -306,16 +706,58 @@ fetch(PROXY+encodeURIComponent(icalUrl))
     document.getElementById('eventsBox').innerHTML=top.map(e=>{
       const day=e.date.getDate();
       const mon=months[e.date.getMonth()];
-      const time=dtstart.includes('T')?'kl '+String(e.date.getHours()).padStart(2,'0')+':'+String(e.date.getMinutes()).padStart(2,'0'):'';
-      return '<div class="ei"><div class="ed"><div class="dy">'+day+'</div><div class="mn">'+mon+'</div></div><div><div class="et">'+e.summary+'</div>'+(time?'<div class="etm">'+time+'</div>':'')+'</div></div>';
+      const vdag=wdays[e.date.getDay()];   // sön, mån, tis ...
+      return '<div class="ei"><div class="ed"><div class="vd">'+vdag+'</div><div class="dy">'+day+'</div><div class="mn">'+mon+'</div></div><div><div class="et">'+e.summary+'</div>'+(e.timeStr?'<div class="etm">'+e.timeStr+'</div>':'')+'</div></div>';
     }).join('');
-  }).catch(()=>{
+  }catch(err){
+    console.warn('Kalenderhämtning misslyckades:',err.message);
     document.getElementById('eventsBox').innerHTML='<p class="loading">Kunde inte hämta händelser.</p>';
-  });
+  }
+})();
 
-fetchRSS('http://www.gp.se/rss/index.jsp?d=113','gpNews','GP',4);
-fetchRSS('https://www.svt.se/rss.xml','svtNews','SVT',4);
+fetchRSS('https://www.dn.se/rss','gpNews','DN',4);
+fetchRSS('https://www.svt.se/nyheter/lokalt/vast/rss.xml','svtNews','SVT Väst',4);
 fetchRSS('https://www.dagen.se/arc/outboundfeeds/rss/','dagenNews','Dagen',4);
+fetchRSS('https://sandaren.se/feed/','sandarenNews','Sändaren',4);
+
+async function checkPw(){
+  const ruta=document.getElementById('pwInput');
+  const felruta=document.getElementById('pwError');
+  const knapp=document.querySelector('#login-screen button');
+  const losen=ruta.value.trim();
+  felruta.textContent='';
+
+  if(KRYPTERAD.indexOf('__KRYPTERAD')!==-1){
+    felruta.textContent='Medlemsdatan är inte krypterad än. Kör kryptera-medlemmar.html först.';
+    return;
+  }
+  if(!losen){ felruta.textContent='Skriv lösenfrasen.'; return; }
+
+  knapp.disabled=true; knapp.textContent='Låser upp...';
+  await new Promise(r=>setTimeout(r,30));
+  try{
+    bdMembers=await dekryptera(KRYPTERAD,losen);
+    try{ sessionStorage.setItem('hmk_medlemmar',JSON.stringify(bdMembers)); }catch(e){}
+    document.getElementById('login-screen').style.display='none';
+    ritaFodelsedagar();
+  }catch(err){
+    felruta.textContent = (err&&err.name==='OperationError')
+      ? 'Fel lösenfras, försök igen.'
+      : 'Kunde inte låsa upp: '+(err.message||err.name);
+    ruta.value=''; ruta.focus();
+  }
+  knapp.disabled=false; knapp.textContent='Logga in';
+}
+
+// Redan upplåst i den här fliken? Då slipper man skriva om lösenfrasen.
+try{
+  const sparad=sessionStorage.getItem('hmk_medlemmar');
+  if(sparad){
+    bdMembers=JSON.parse(sparad);
+    document.getElementById('login-screen').style.display='none';
+    ritaFodelsedagar();
+  }
+}catch(e){}
 </script>
 </body>
 </html>
