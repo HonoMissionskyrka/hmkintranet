@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HMK Personalportal</title>
+<title>HMK Medlemssidan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   #login-screen {
@@ -139,22 +139,22 @@
 <body>
 
 <div id="login-screen">
-  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <img src="HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
   <span class="logo-sub">Hönö Missionskyrka</span>
   <div class="gold-line"></div>
-  <h2>Personalportal</h2>
+  <h2>Medlemssidan</h2>
   <input type="password" id="pwInput" placeholder="Lösenord" onkeydown="if(event.key==='Enter')checkPw()">
   <button onclick="checkPw()">Logga in</button>
   <div class="error" id="pwError"></div>
-  <a href="https://honomissionskyrka.github.io/hmkintranet/start.html" style="margin-top:20px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;letter-spacing:0.06em;">← Tillbaka till startsidan</a>
+  <a href="start.html" style="margin-top:20px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;letter-spacing:0.06em;">← Tillbaka till startsidan</a>
 </div>
 
 <div class="header">
-  <img class="header-logo" src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <img class="header-logo" src="HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
   <div class="date-pill" id="dateChip">Laddar...</div>
 </div>
 <div class="greeting-strip">
-  <p>Välkommen tillbaka — <strong>Glad att du är här idag!</strong> Här hittar du allt du behöver för din arbetsdag.</p>
+  <p>Välkommen tillbaka — <strong>Glad att du är här idag!</strong> Här hittar du vad som händer i församlingen.</p>
 </div>
 
 <div class="main">
@@ -162,44 +162,23 @@
 
     <!-- Snabblänkar -->
     <div class="card">
-      <div class="ch"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13,2 13,9 20,9"/></svg><span>Snabblänkar</span></div>
+      <div class="ch"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13,2 13,9 20,9"/></svg><span>För medlemmar</span></div>
       <div class="cb">
-        <div class="ql" style="grid-template-columns:repeat(8,1fr)">
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank">
-            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            <span>Personal­handbok</span>
-          </a>
-          <!-- Biblioteket "Mina Dokument" på HMK-Personal. Varje anställd har en egen
-               mapp med unika behörigheter – ingen kommer åt någon annans mapp. -->
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Mina%20Dokument/Forms/AllItems.aspx" target="_blank">
-            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            <span>Mina dokument</span>
-          </a>
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personalrad/Personarkiv/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonalrad%2FPersonarkiv%2FAktiva&viewid=c748138d%2Dce4b%2D4ef2%2D90eb%2D4fe4b7f9000e" target="_blank">
+        <!-- STYRELSEDOKUMENT_URL nedan ska bytas mot adressen till biblioteket
+             i SharePoint. Behörigheten sitter i SharePoint, inte här: dela
+             biblioteket med Entra-gruppen HMK-Medlemmar. -->
+        <div class="ql" style="grid-template-columns:repeat(3,1fr)">
+          <a class="ql-btn" href="STYRELSEDOKUMENT_URL" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span>Mina personal­handlingar</span>
+            <span>Styrelse&shy;dokument</span>
           </a>
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonal%2FPersonalhandbok%2FSemester&viewid=2f947f30%2D082c%2D48d1%2Db60a%2D076986569876" target="_blank">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>Semester­ansökan</span>
-          </a>
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx?id=%2Fsites%2FHMK%2DPersonal%2FPersonalhandbok%2FSjukfr%C3%A5nvaro&viewid=2f947f30%2D082c%2D48d1%2Db60a%2D076986569876" target="_blank">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
-            <span>Sjuk­anmälan</span>
-          </a>
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Policyer</span>
-          </a>
-          <a class="ql-btn" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank">
+          <a class="ql-btn" href="kontakter.html" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Kontakter</span>
           </a>
-          <!-- OBS: pekar på rot-sajtens dokumentbibliotek, inte HMK-Personal.
-               Kontrollera att Anders, Magdalena och Joel har åtkomst dit. -->
-          <a class="ql-btn" href="https://honomissionskyrka.sharepoint.com/Delade%20dokument/Datafiler/fodelsedagar.html" target="_blank">
+          <a class="ql-btn" href="medlemssok.html" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Födelse­dagar</span>
+            <span>Medlems­sök</span>
           </a>
         </div>
       </div>
@@ -207,20 +186,10 @@
 
     <!-- Bibliotekskort -->
     <div class="card">
-      <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Mina bibliotek</span></div>
+      <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Kontakter</span></div>
       <div class="cb" style="padding:8px;">
         <div class="lib-grid" style="grid-template-columns:repeat(3,1fr);">
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Personalhandbok/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Personalhandbok-bild.png" alt="Personalhandbok"></a>
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Uthyrning/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Uthyrning-bild.png" alt="Uthyrning"></a>
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Policys/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Policys-bild.png" alt="Policys"></a>
-          <!-- KONTROLLERA: biblioteket heter "Skerhet" i URL:en (utan ä).
-               Öppna biblioteket i SharePoint och jämför med adressfältet. -->
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Skerhet/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Säkerhet-bild.png" alt="Säkerhet"></a>
-          <a class="lib-card" href="https://honomissionskyrka.github.io/hmkintranet/kontakter.html" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Kontakter-bild.png" alt="Kontakter"></a>
-          <!-- ÄNDRAD: pekade tidigare på /_layouts/15/viewlsts.aspx, vilket visade hela
-               sajtens innehåll för personalen. Pekar nu på det nya biblioteket Ovrigt
-               (ASCII-URL, visningsnamn "Övrigt"). -->
-          <a class="lib-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Personal/Ovrigt/Forms/AllItems.aspx" target="_blank"><img src="https://honomissionskyrka.github.io/hmkintranet/Övrigt-bild.png" alt="Övrigt"></a>
+          <a class="lib-card" href="kontakter.html" target="_blank"><img src="Kontakter-bild.png" alt="Kontakter"></a>
         </div>
       </div>
     </div>
@@ -310,7 +279,7 @@
       <a class="lp-item" href="https://liveevent.nu/webbkamera/hono/hono_1_1280.jpg" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><div><div class="lp-txt">Webcam Hönö Klova</div><div class="lp-sub">Live-kamera</div></div></a>
       <!-- Sökverktyget ligger i medlemssok.html. Medlemsdatan finns på två
            ställen: där och i bdMembers längre ned – byt på båda vid uppdatering. -->
-      <a class="lp-item" href="https://honomissionskyrka.github.io/hmkintranet/medlemssok.html" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Medlemssök</div><div class="lp-sub">Sök på ålder, namn eller månad</div></div></a>
+      <a class="lp-item" href="medlemssok.html" target="_blank"><div class="lp-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><div><div class="lp-txt">Medlemssök</div><div class="lp-sub">Sök på ålder, namn eller månad</div></div></a>
       <div class="lp-more">→ Visa fler länkar</div>
     </div>
 
