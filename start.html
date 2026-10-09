@@ -82,6 +82,11 @@
     transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
   }
   .rad-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(40,38,38,0.22); }
+  /* Råd utan egen sajt än — visas men går inte att klicka */
+  .rad-card.kommer { opacity: 0.55; cursor: default; }
+  .rad-card.kommer:hover { transform: none; box-shadow: 0 2px 12px rgba(40,38,38,0.15); }
+  .rad-card.kommer .rad-card-arrow,
+  .rad-card.kommer:hover .rad-card-arrow { background: #c9cdc4; }
   .rad-card-head {
     background: linear-gradient(135deg, #5a7079, #718B94);
     padding: 16px; position: relative; overflow: hidden;
@@ -110,7 +115,7 @@
 <body>
 
 <div class="logo-wrap">
-  <img src="https://honomissionskyrka.github.io/hmkintranet/HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <img src="HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
   <span class="logo-sub">Hönö Missionskyrka</span>
 </div>
 
@@ -121,12 +126,22 @@
 
 <div class="grid">
 
-  <a class="card" href="https://honomissionskyrka.github.io/hmkintranet/index.html">
+  <a class="card" href="medlem.html">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#5a7079,#718B94);">
+      <span>Medlem</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Församlingsmedlem</div><div class="card-desc">Protokoll, matrikel och nyheter</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="personal.html">
     <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#718B94);">
       <span>Personal</span>
     </div>
     <div class="card-body">
-      <div><div class="card-name">Personal</div><div class="card-desc">personal@honomissionskyrka.se</div></div>
+      <div><div class="card-name">Personal</div><div class="card-desc">Personalhandbok, semester, policyer</div></div>
       <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
   </a>
@@ -136,37 +151,7 @@
       <span>Styrelse</span>
     </div>
     <div class="card-body">
-      <div><div class="card-name">Församlingsstyrelse</div><div class="card-desc">hmkstyrelse@honomissionskyrka.se</div></div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-    </div>
-  </a>
-
-  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Konferensledning">
-    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#5a7079);">
-      <span>Konferens­en</span>
-    </div>
-    <div class="card-body">
-      <div><div class="card-name">Konferensledning</div><div class="card-desc">konferens@honomissionskyrka.se</div></div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-    </div>
-  </a>
-
-  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HSCF-Bolagsstyrelse">
-    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#718B94,#5a7079);">
-      <span>HSCF</span>
-    </div>
-    <div class="card-body">
-      <div><div class="card-name">HSCF AB</div><div class="card-desc">hscfstyrelse@honomissionskyrka.se</div></div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-    </div>
-  </a>
-
-  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem">
-    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#5a7079,#718B94);">
-      <span>Medlem</span>
-    </div>
-    <div class="card-body">
-      <div><div class="card-name">Församlingsmedlem</div><div class="card-desc">hmkmedlem@honomissionskyrka.se</div></div>
+      <div><div class="card-name">Församlingsstyrelse</div><div class="card-desc">Styrelsens arbetsmaterial</div></div>
       <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
   </a>
@@ -176,7 +161,27 @@
       <span>Personalråd</span>
     </div>
     <div class="card-body">
-      <div><div class="card-name">Personalråd</div><div class="card-desc">personalrad@honomissionskyrka.se</div></div>
+      <div><div class="card-name">Personalråd</div><div class="card-desc">Personalärenden och arkiv</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Konferensledning">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#5a7079);">
+      <span>Konferensen</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">Konferensledning</div><div class="card-desc">Hönökonferensens planering</div></div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </a>
+
+  <a class="card" href="https://honomissionskyrka.sharepoint.com/sites/HSCF-Bolagsstyrelse">
+    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#718B94,#5a7079);">
+      <span>HSCF</span>
+    </div>
+    <div class="card-body">
+      <div><div class="card-name">HSCF AB</div><div class="card-desc">Bolagets handlingar</div></div>
       <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
   </a>
@@ -192,7 +197,7 @@
       </div>
       <div>
         <div class="rad-toggle-text">Råd</div>
-        <div class="rad-toggle-sub">Ungdomsråd, Musikråd, Verksamhetsråd och fler</div>
+        <div class="rad-toggle-sub">Ungdomsråd, Musikråd, Verksamhetsråd — kommer snart</div>
       </div>
     </div>
     <div class="rad-chevron" id="radChevron">
@@ -202,37 +207,37 @@
 
   <div class="rad-grid" id="radGrid">
 
-    <a class="rad-card" href="#">
+    <div class="rad-card kommer">
       <div class="rad-card-head"><div class="rad-card-title">Ungdomsråd</div></div>
       <div class="rad-card-body">
         <div class="rad-card-email">ungdomsrad@honomissionskyrka.se</div>
         <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
-    </a>
+    </div>
 
-    <a class="rad-card" href="#">
+    <div class="rad-card kommer">
       <div class="rad-card-head"><div class="rad-card-title">Musikråd</div></div>
       <div class="rad-card-body">
         <div class="rad-card-email">musikrad@honomissionskyrka.se</div>
         <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
-    </a>
+    </div>
 
-    <a class="rad-card" href="#">
+    <div class="rad-card kommer">
       <div class="rad-card-head"><div class="rad-card-title">Verksamhetsråd</div></div>
       <div class="rad-card-body">
         <div class="rad-card-email">verksamhetsrad@honomissionskyrka.se</div>
         <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
-    </a>
+    </div>
 
-    <a class="rad-card" href="#">
+    <div class="rad-card kommer">
       <div class="rad-card-head"><div class="rad-card-title">Missionsråd</div></div>
       <div class="rad-card-body">
         <div class="rad-card-email">missionsrad@honomissionskyrka.se</div>
         <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
-    </a>
+    </div>
 
   </div>
 </div>
