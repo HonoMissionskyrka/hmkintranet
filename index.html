@@ -449,7 +449,7 @@ fetchRSS('https://sandaren.se/feed','sandarenNews','Sändaren',4);
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 async function checkPw(){
   const val=document.getElementById('pwInput').value.trim();
-  if(await sha(val)==='a65f00bd546e3684cd2953024541ce3367662b6a25e86629d16045d5e08ed656'){
+  if(await sha(val)==='8f1b8fa60e6a2395132e10e410fb137e02138a0520820a4cf4da6e1827a3dfb9'){
     document.getElementById('login-screen').style.display='none';
     sessionStorage.setItem('hmk_auth','1');
   } else {
