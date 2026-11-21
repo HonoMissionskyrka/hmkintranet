@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gåvor och insamlingar – Hönö Missionskyrka</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; min-height: 100vh; background: #718B94; display: flex; flex-direction: column; align-items: center; padding: 32px 16px; color: #282626; }
+  .logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; }
+  .logo-wrap img { height: 64px; width: auto; margin-bottom: 10px; }
+  .logo-sub { color: rgba(255,255,255,0.65); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .gold-line { width: 60px; height: 2px; background: #C1A051; border-radius: 2px; margin: 18px auto 28px; }
+  .title { font-family: 'Playfair Display', serif; color: white; font-size: 28px; font-weight: 400; text-align: center; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-bottom: 32px; letter-spacing: 0.04em; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 700px; width: 100%; }
+  .card { background: white; border-radius: 16px; overflow: hidden; text-decoration: none; box-shadow: 0 4px 24px rgba(40,38,38,0.18); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(40,38,38,0.28); }
+  .card-img { padding: 34px 16px; text-align: center; position: relative; }
+  .card-img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: #C1A051; }
+  .card-img span { color: white; font-size: 22px; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .card-body { padding: 14px 16px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .card-name { font-size: 14px; font-weight: 500; color: #282626; }
+  .card-desc { font-size: 11px; color: #888780; margin-top: 2px; }
+  .arrow { width: 28px; height: 28px; background: #718B94; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .card:hover .arrow, .doc:hover .arrow { background: #C1A051; }
+  .arrow svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .panel { background: white; border-radius: 16px; max-width: 760px; width: 100%; padding: 28px 32px; box-shadow: 0 4px 24px rgba(40,38,38,0.18); margin-bottom: 16px; border-bottom: 6px solid #C1A051; }
+  .panel h2 { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 20px; color: #718B94; margin: 22px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #718B94; }
+  .panel h2:first-child { margin-top: 0; }
+  .panel p { font-size: 14.5px; line-height: 1.6; margin-bottom: 10px; }
+  .panel p.lead { font-size: 15.5px; }
+  .way { margin: 14px 0; }
+  .panel a { color: #718B94; }
+  .way b { color: #282626; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0 4px; font-size: 14px; }
+  th, td { border: 1px solid #718B94; padding: 8px 10px; text-align: left; }
+  th { color: #718B94; font-weight: 600; }
+  .docs { max-width: 760px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .doc { background: white; border-radius: 12px; padding: 12px 14px; text-decoration: none; color: #282626; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; font-weight: 500; box-shadow: 0 2px 12px rgba(40,38,38,0.15); transition: transform 0.2s; }
+  .doc:hover { transform: translateY(-2px); }
+  .doc small { display: block; font-weight: 400; color: #888780; font-size: 11px; margin-top: 2px; }
+  .sect { color: white; max-width: 760px; width: 100%; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; margin: 14px 0 10px; opacity: 0.85; }
+  .back { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; margin-top: 18px; }
+  .back:hover { color: white; }
+  .footer { margin-top: 28px; color: rgba(255,255,255,0.55); font-size: 11px; text-align: center; letter-spacing: 0.06em; line-height: 1.7; }
+  .footer a { color: rgba(255,255,255,0.8); }
+  @media (max-width: 640px) { .grid, .docs { grid-template-columns: 1fr; } .panel { padding: 22px 18px; } .title { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="logo-wrap">
+  <img src="HMK-Logo_white.png" alt="Hönö Missionskyrka" onerror="this.style.display='none'">
+  <span class="logo-sub">Hönö Missionskyrka</span>
+</div>
+<div class="gold-line"></div>
+<h1 class="title">Gåvor, insamlingar och fonder</h1>
+<p class="subtitle">Så kan du ge, samla in och söka pengar hos oss</p>
+<div class="panel">
+<p class="lead">Det finns flera sätt att ge och flera sätt att samla in pengar till något särskilt. Här förklarar vi skillnaden, så att pengarna alltid används som givaren tänkt.</p>
+
+<h2>Gåva</h2>
+<p>En gåva är en enskild inbetalning. Du kan ge utan särskilt ändamål, så beslutar styrelsen om användningen. Du kan också ge till ett bestämt ändamål, och då används pengarna bara till det. Skriv tydligt vad gåvan ska gå till.</p>
+
+<h2>Insamling</h2>
+<p>En insamling är en tidsbegränsad satsning mot ett mål, till exempel ny utrustning eller ett läger. Vill du eller din grupp samla in pengar går ni via styrelsen. Styrelsen godkänner insamlingen och ordnar ett konto, och när tiden gått redovisar ni hur det gick. Använd mallen nedan.</p>
+
+<h2>Fond</h2>
+<p>En fond är en bestående kassa för ett bestämt ändamål. Till skillnad från en insamling har en fond inget slutdatum, och man kan fortsätta ge till den. Gåvor, insamlingar och testamenten kan fylla på en fond. Varje fond har en fondbeskrivning som talar om ändamål, ursprung och vilka villkor som gäller. Vissa fonder är stängda och fylls inte på, till exempel när en fond bildats av ett enskilt testamente, och används då tills pengarna är slut. Du kan ansöka om pengar ur en fond om din idé passar ändamålet.</p>
+
+<h2>Testamente</h2>
+<p>Du som vill testamentera till församlingen kan ange ett ändamål. Vi hjälper gärna till att formulera det så att det blir tydligt och går att följa. Kontakta ordföranden: <a href="mailto:ordforande@honomissionskyrka.se">ordforande@honomissionskyrka.se</a>. Juridisk rådgivning om själva testamentet tar du separat.</p>
+
+<h2>Så ger du</h2>
+<table>
+<tr><th></th><th>Församlingens verksamhet</th><th>Barn- och ungdomsverksamhet</th></tr>
+<tr><td>Bankgiro</td><td>340-2310</td><td>889-6508</td></tr>
+<tr><td>Swish</td><td>123-5600945</td><td>123 604 24 85</td></tr>
+<tr><td>SEB konto</td><td>5191-3301494</td><td></td></tr>
+</table>
+<p style="margin-top:12px"><b>Tack för din gåva!</b></p>
+</div>
+
+<div class="sect">Dokument</div>
+<div class="docs">
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Gavor_styrdokument.pdf"><div>Gåvor – styrdokument<small>PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Insamling_mall.pdf"><div>Starta en insamling<small>Mall, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Insamling_mall.docx"><div>Starta en insamling<small>Mall att fylla i, Word</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Fondpolicy.pdf"><div>Fondpolicy<small>Hur fondmedel hanteras och söks</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Ansokan_fondmedel.pdf"><div>Ansökan om fondmedel<small>Blankett, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Ansokan_fondmedel.docx"><div>Ansökan om fondmedel<small>Blankett att fylla i, Word</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+  <a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Fondbeskrivning_mall.pdf"><div>Fondbeskrivning<small>Mall, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a>
+</div>
+<a class="back" href="medlem.html">← Tillbaka till medlemssidan</a>
+<div class="footer">Frågor? Mejla <a href="mailto:hmkmedlem@honomissionskyrka.se">hmkmedlem@honomissionskyrka.se</a><br>Hönö Missionskyrka</div>
+</body>
+</html>
