@@ -52,6 +52,13 @@
   .q p { font-size: 14.5px; line-height: 1.6; margin-bottom: 12px; }
   .q .docs { margin-bottom: 0; max-width: none; }
   .q .doc { box-shadow: none; border: 1px solid #d8d6d0; }
+  .q { display:flex; padding:0; overflow:hidden; }
+  .q-img { flex:0 0 150px; background:linear-gradient(160deg,#4a6670,#718B94); display:flex; align-items:center; justify-content:center; position:relative; }
+  .q-img::after { content:''; position:absolute; top:0; right:0; bottom:0; width:4px; background:#C1A051; }
+  .q-img svg { width:78px; height:78px; fill:none; stroke:#fff; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .q-img svg .g { stroke:#C1A051; }
+  .q-body { padding:22px 26px 18px; flex:1; min-width:0; }
+  @media (max-width:640px){ .q{flex-direction:column} .q-img{flex:0 0 96px} .q-img svg{width:56px;height:56px} .q-img::after{top:auto;left:0;width:auto;height:4px} .q-body{padding:18px} }
 </style>
 </head>
 <body>
@@ -62,9 +69,9 @@
 <div class="gold-line"></div>
 <h1 class="title">Stadgar och organisation</h1>
 <p class="subtitle">Så styrs och organiseras församlingen</p>
-<div class="q"><h2>Vilka regler gäller för församlingen?</h2><p>Stadgarna beskriver vad församlingen är till för, hur medlemskap fungerar och hur beslut fattas.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/HMF_stadgar.pdf" target="_blank"><div>Stadgar<small>Församlingens stadgar, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div>
-<div class="q"><h2>Hur är församlingen organiserad?</h2><p>Församlingsordningen visar hur arbetet fördelas mellan församlingsmöte, styrelse och råd.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/HMF_f%C3%B6rsamlingsordning.pdf" target="_blank"><div>Församlingsordning<small>Hur vi är organiserade, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div>
-<div class="q"><h2>Hur hanterar vi dokument och arkiv?</h2><p>Här står vad som sparas, var det sparas och hur länge.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/DokumentArkivpolicy.docx" target="_blank"><div>Dokument- och arkivpolicy<small>Word</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div>
+<div class="q"><div class="q-img"><svg viewBox="0 0 64 64"><path d="M16 8h26l8 8v40H16z"/><path d="M42 8v8h8"/><path d="M24 26h18M24 34h18"/><circle class="g" cx="34" cy="46" r="5"/></svg></div><div class="q-body"><h2>Vilka regler gäller för församlingen?</h2><p>Stadgarna beskriver vad församlingen är till för, hur medlemskap fungerar och hur beslut fattas.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/HMF_stadgar.pdf" target="_blank"><div>Stadgar<small>Församlingens stadgar, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div></div>
+<div class="q"><div class="q-img"><svg viewBox="0 0 64 64"><rect x="24" y="8" width="16" height="12" rx="2"/><rect x="6" y="44" width="16" height="12" rx="2"/><rect x="42" y="44" width="16" height="12" rx="2"/><path d="M32 20v12M14 44V32h36v12"/></svg></div><div class="q-body"><h2>Hur är församlingen organiserad?</h2><p>Församlingsordningen visar hur arbetet fördelas mellan församlingsmöte, styrelse och råd.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/HMF_f%C3%B6rsamlingsordning.pdf" target="_blank"><div>Församlingsordning<small>Hur vi är organiserade, PDF</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div></div>
+<div class="q"><div class="q-img"><svg viewBox="0 0 64 64"><rect x="8" y="14" width="48" height="12" rx="2"/><path d="M12 26v28h40V26"/><path class="g" d="M26 38h12"/></svg></div><div class="q-body"><h2>Hur hanterar vi dokument och arkiv?</h2><p>Här står vad som sparas, var det sparas och hur länge.</p><div class="docs"><a class="doc" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Medlem/Styrdokument/Stadgar%20och%20organisation/DokumentArkivpolicy.docx" target="_blank"><div>Dokument- och arkivpolicy<small>Word</small></div><div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></a></div></div></div>
 <a class="back" href="medlem.html">← Tillbaka till medlemssidan</a>
 <div class="footer">Frågor? Mejla <a href="mailto:hmkmedlem@honomissionskyrka.se">hmkmedlem@honomissionskyrka.se</a><br>Hönö Missionskyrka</div>
 </body>

@@ -47,6 +47,16 @@
   .footer { margin-top: 28px; color: rgba(255,255,255,0.55); font-size: 11px; text-align: center; letter-spacing: 0.06em; line-height: 1.7; }
   .footer a { color: rgba(255,255,255,0.8); }
   @media (max-width: 640px) { .grid, .docs { grid-template-columns: 1fr; } .panel { padding: 22px 18px; } .title { font-size: 22px; } }
+  .q { display:flex; padding:0; overflow:hidden; }
+  .q-img { flex:0 0 150px; background:linear-gradient(160deg,#4a6670,#718B94); display:flex; align-items:center; justify-content:center; position:relative; }
+  .q-img::after { content:''; position:absolute; top:0; right:0; bottom:0; width:4px; background:#C1A051; }
+  .q-img svg { width:78px; height:78px; fill:none; stroke:#fff; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .q-img svg .g { stroke:#C1A051; }
+  .q-body { padding:22px 26px 18px; flex:1; min-width:0; }
+  @media (max-width:640px){ .q{flex-direction:column} .q-img{flex:0 0 96px} .q-img svg{width:56px;height:56px} .q-img::after{top:auto;left:0;width:auto;height:4px} .q-body{padding:18px} }
+
+  .panel.gv .q-img{align-items:flex-start;padding-top:48px} .panel.gv{display:flex;padding:0;overflow:hidden} .panel.gv .q-body{padding:28px 32px}
+  @media (max-width:640px){.panel.gv{flex-direction:column}.panel.gv .q-body{padding:22px 18px}}
 </style>
 </head>
 <body>
@@ -57,7 +67,7 @@
 <div class="gold-line"></div>
 <h1 class="title">Gåvor, insamlingar och fonder</h1>
 <p class="subtitle">Så kan du ge, samla in och söka pengar hos oss</p>
-<div class="panel">
+<div class="panel gv"><div class="q-img"><svg viewBox="0 0 64 64"><rect x="10" y="26" width="44" height="12"/><path d="M14 38v18h36V38M32 26v30"/><path class="g" d="M32 26c-8 0-14-3-12-9s10-2 12 9c2-11 10-15 12-9s-4 9-12 9z"/></svg></div><div class="q-body">
 <p class="lead">Det finns flera sätt att ge och flera sätt att samla in pengar till något särskilt. Här förklarar vi skillnaden, så att pengarna alltid används som givaren tänkt.</p>
 
 <h2>Gåva</h2>
@@ -80,7 +90,7 @@
 <tr><td>SEB konto</td><td>5191-3301494</td><td></td></tr>
 </table>
 <p style="margin-top:12px"><b>Tack för din gåva!</b></p>
-</div>
+</div></div>
 
 <div class="sect">Dokument</div>
 <div class="docs">
