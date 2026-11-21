@@ -141,26 +141,6 @@
     </div>
   </a>
 
-  <a class="card" style="opacity:.55;pointer-events:none" href="#">
-    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#4a6670,#5a7079);">
-      <span>Konferens­ledning</span>
-    </div>
-    <div class="card-body">
-      <div><div class="card-name">Konferensledning</div><div class="card-desc">konferens@honomissionskyrka.se</div></div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-    </div>
-  </a>
-
-  <a class="card" style="opacity:.55;pointer-events:none" href="#">
-    <div class="card-img-placeholder" style="background:linear-gradient(135deg,#718B94,#5a7079);">
-      <span>HSCF</span>
-    </div>
-    <div class="card-body">
-      <div><div class="card-name">HSCF AB</div><div class="card-desc">hscfstyrelse@honomissionskyrka.se</div></div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-    </div>
-  </a>
-
   <a class="card" href="https://honomissionskyrka.github.io/hmkintranet/medlem.html">
     <div class="card-img-placeholder" style="background:linear-gradient(135deg,#5a7079,#718B94);">
       <span>Medlem</span>
@@ -185,7 +165,7 @@
 
 <!-- Råd-sektion -->
 <div class="rad-section">
-  <div class="rad-toggle" onclick="toggleRad()">
+  <div class="rad-toggle" onclick="toggleRad('radGrid','radChevron')">
     <div class="rad-toggle-left">
       <div class="rad-toggle-icon">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -237,14 +217,50 @@
   </div>
 </div>
 
+<!-- Övriga-sektion -->
+<div class="rad-section">
+  <div class="rad-toggle" onclick="toggleRad('ovrGrid','ovrChevron')">
+    <div class="rad-toggle-left">
+      <div class="rad-toggle-icon">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      </div>
+      <div>
+        <div class="rad-toggle-text">Övriga</div>
+        <div class="rad-toggle-sub">Konferensledning och HSCF</div>
+      </div>
+    </div>
+    <div class="rad-chevron" id="ovrChevron">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+
+  <div class="rad-grid" id="ovrGrid">
+
+    <a class="rad-card" href="https://honomissionskyrka.sharepoint.com/sites/HMK-Konferensledning">
+      <div class="rad-card-head"><div class="rad-card-title">Konferensledning</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">konferens@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="rad-card" href="https://honomissionskyrka.sharepoint.com/sites/HSCF-Bolagsstyrelse">
+      <div class="rad-card-head"><div class="rad-card-title">HSCF AB</div></div>
+      <div class="rad-card-body">
+        <div class="rad-card-email">hscfstyrelse@honomissionskyrka.se</div>
+        <div class="rad-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
 <div class="footer">HÖNÖ MISSIONSKYRKA &nbsp;·&nbsp; INTRANÄT</div>
 
 <script>
-function toggleRad() {
-  const grid = document.getElementById('radGrid');
-  const chevron = document.getElementById('radChevron');
-  grid.classList.toggle('open');
-  chevron.classList.toggle('open');
+function toggleRad(g,c) {
+  document.getElementById(g).classList.toggle('open');
+  document.getElementById(c).classList.toggle('open');
 }
 </script>
 </body>
